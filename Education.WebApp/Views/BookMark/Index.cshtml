@@ -1,0 +1,27 @@
+﻿@using Education.ViewModel
+@model BookMarkVM
+
+
+<section class="courses">
+
+    <h1 class="heading">bookmarked playlists</h1>
+
+    <div class="box-container">
+      @foreach(var item in Model.Playlists){
+        <div class="box">
+            <div class="tutor">
+                <img src="@item.AppUser.Image" alt="">
+                <div>
+                    <h3>@item.AppUser.UserName</h3>
+                        <span>@item.DateCreated.ToString("dd/MM/yyyy")</span>
+                </div>
+            </div>
+            <img src="@item.Thumb" class="thumb" alt="">
+            <h3 class="title">@item.Title</h3>
+            <a asp-action="Detail" asp-controller="Playlist" asp-route-Id ="@item.Id" class="inline-btn">view playlist</a>
+        </div>
+        }
+ 
+    </div>
+
+</section>

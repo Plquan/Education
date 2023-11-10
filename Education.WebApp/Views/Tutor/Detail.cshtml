@@ -1,0 +1,45 @@
+﻿@using Education.ViewModel
+@model TutorDetailVM
+
+<!-- teachers profile section starts  -->
+
+<section class="tutor-profile">
+
+    <h1 class="heading">profile details</h1>
+    <div class="details">
+        <div class="tutor">
+            <img src="@Model.UserImage" alt="">
+            <h3>@Model.UserName</h3>
+            <span>Tutor</span>
+        </div>
+        <div class="flex">
+            <p>total playlists : <span>@Model.totalPlaylist</span></p>
+            <p>total videos : <span>@Model.totalVideo</span></p>
+            <p>total likes : <span>@Model.totalLike</span></p>
+            <p>total comments : <span>@Model.totalComment</span></p>
+        </div>
+    </div>
+
+</section>
+
+<!-- teachers profile section ends -->
+
+<section class="courses">
+
+    <h1 class="heading">latest courese</h1>
+
+    <div class="box-container">
+
+        @foreach (var item in Model.Playlists){
+        <div class="box">     
+            <img src="@item.Thumb" class="thumb" alt="">
+            <h3 class="title">@item.Title</h3>
+                <a asp-controller="Playlist" asp-action="Detail" asp-route-id="@item.Id" class="inline-btn">view playlist</a>
+        </div>
+      }
+
+    </div>
+
+</section>
+
+<!-- courses section ends -->

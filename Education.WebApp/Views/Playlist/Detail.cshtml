@@ -1,0 +1,84 @@
+﻿@using Education.Data.Entities;
+@using Education.ViewModel;
+@using Microsoft.AspNetCore.Identity;
+@model PlaylistDetailVM;
+
+@inject UserManager<AppUser> UserManager
+
+@{
+
+    var CurrentUser = await UserManager.GetUserAsync(User);
+}
+
+
+<section class="playlist">
+
+   <h1 class="heading">playlist details</h1>
+
+   <div class="row">
+
+      <div class="col">
+            @*          <form action="" method="post" class="save-list">
+          <input type="hidden" name="list_id" value="<?= $playlist_id; ?>"> 
+            <?php
+               if($select_bookmark->rowCount() > 0){
+            ?>
+            <button type="submit" name="save_list"><i class="fas fa-bookmark"></i><span>saved</span></button>
+            <?php
+               }else{
+            ?>
+               <button type="submit" name="save_list"><i class="far fa-bookmark"></i><span>save playlist</span></button>
+            <?php
+               }
+            ?>
+         </form> *@
+         <div class="thumb">
+                <span>@Model.Contents.Count videos</span>
+                <img src="@Model.Thumb" alt="">
+         </div>
+      </div>
+
+      <div class="col">
+         <div class="tutor">
+                <img src="@Model.AppUser.Image" alt="">
+            <div>
+               <h3>@Model.AppUser.UserName</h3>
+               <span>Tutor</span>
+            </div>
+         </div>
+         <div class="details">
+            <h3>@Model.Title</h3>
+            <p>@Model.Description</p>
+                <div class="date"><i class="fas fa-calendar"></i><span>@Model.DateCreated.ToString("dd/MM/yyyy")</span></div>
+         </div>
+      </div>
+
+
+   </div>
+
+</section>
+
+<!-- playlist section ends -->
+
+<!-- videos container section starts  -->
+
+<section class="videos-container">
+
+   <h1 class="heading">playlist videos</h1>
+
+   <div class="box-container">
+
+    @foreach (var item in Model.Contents)
+        {
+            <input type="hidden" value="">
+
+            <a href ="@Url.Action("Index","Content", new{ ContentId = item.Id, UserId = CurrentUser.Id})"class="box">
+         <i class="fas fa-play"></i>
+                <img src="@item.Thumb" alt="">
+                <h3>@item.Title</h3>
+                </a>
+        }
+
+   </div>
+
+</section>

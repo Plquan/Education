@@ -1,0 +1,36 @@
+﻿@using Education.ViewModel
+@model List<LikeVM>
+
+<section class="liked-videos">
+
+    <h1 class="heading">liked videos</h1>
+
+    <div class="box-container">
+
+       @foreach(var item in Model){
+        <div class="box">
+            <div class="tutor">
+                <img src="@item.AppUser.Image"alt="">
+                <div>
+                    <h3>@item.AppUser.UserName</h3>
+                    <span><?= $fetch_contents['date']; ?></span>
+                </div>
+            </div>
+            <img src="@item.Contents.Thumb" alt="" class="thumb">
+            <h3 class="title">@item.Contents.Title</h3>
+            <form action="" method="post" class="flex-btn">
+                <a href="@Url.Action("Index","Content",new {ContentId = item.Contents.Id, UserId = item.AppUser.Id})" class="inline-btn">watch video</a>
+                    <input value="Remove" type ="submit"  class="inline-delete-btn">
+                           
+            </form>
+                
+               
+                  
+                
+        </div>
+        }
+     
+
+    </div>
+
+</section>

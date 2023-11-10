@@ -1,0 +1,108 @@
+﻿@using Education.Data.Entities;
+@using Education.ViewModel;
+@using Microsoft.AspNetCore.Identity;
+@model ContentVM
+@inject UserManager<AppUser> UserManager
+
+@{
+    var CurrentUser = await UserManager.GetUserAsync(User);
+}
+    <!-- watch video section starts  -->
+
+    <section class="watch-video">
+
+        <div class="video-details">
+        <video src="@Model.Video" class="video" controls poster="@Model.Thumb" ></video>
+            <h3 class="title">@Model.Title</h3>
+            <div class="info">
+                <p><i class="fas fa-calendar"></i><span>@Model.DateCreated.ToString("dd-MM-yyyy")</span></p>
+                <p><i class="fas fa-heart"></i><span>@Model.Likes.Count</span></p>
+            </div>
+            <div class="tutor">
+                <img src="@Model.AppUser.Image" alt="">
+                <div>
+                    <h3>@Model.AppUser.UserName</h3>
+                    <span>Tutor</span>
+                </div>
+            </div>
+             <form action="" method="post" class="flex">
+                <input type="hidden" name="content_id" >
+                <a asp-action="Detail" asp-controller ="Playlist" asp-route-Id ="@Model.PlaylistId" class="inline-btn">view playlist</a>
+                        
+                @if (Model.UserLiked == 1)
+                {
+                    <button type="submit" ><i class="fas fa-heart"></i><span>liked</span></button>
+                }
+                else
+                {
+                <button type="submit"><i id="Liked" class="far fa-heart"></i><span>like</span></button>
+                }
+             
+            </form> 
+            <div class="description"><p>@Model.Description</p></div> 
+        </div>
+             
+
+    </section>
+
+    <!-- watch video section ends -->
+    <!-- comments section starts  -->
+
+    <section class="comments">
+
+        <h1 class="heading">add a comment</h1>
+
+        <form action="" method="post" class="add-comment">
+            <input type="hidden" name="content_id" value="<?= $get_id; ?>">
+            <textarea name="comment_box" required placeholder="write your comment..." maxlength="300" cols="30" rows="10"></textarea>
+            <input type="submit" value="add comment" name="add_comment" class="inline-btn">
+        </form>
+
+        <h1 class="heading">user comments</h1>
+
+
+        <div class="show-comments">
+         @foreach (var item in Model.Comments){
+            <div class="box">
+                <div class="user">
+                    <img src="@item.AppUser.Image" alt="">
+                    <div>
+                            <h3>@item.AppUser.UserName</h3>
+                            <span>@item.DateCreated.ToString("dd-MM-yyyy")</span>
+                    </div>
+                </div>
+                <p class="text">@item.Message</p>
+                    @if (item.UserId == CurrentUser.Id)
+                    {
+                        <form action="" method="post" class="flex-btn">
+                         <input type="hidden" name="comment_id" value="@item.Id">
+                        <button type="submit"  class="inline-option-btn">edit comment</button>
+                    <button type="submit" name="delete_comment" class="inline-delete-btn" onclick="return confirm('delete this comment?');">delete comment</button>
+                </form>
+                }
+            </div>
+            }
+        </div>
+
+    </section>
+
+@section scripts{
+    <script>
+        $("#c_send").click(function () {
+            $.ajax({
+                url: '/Content/AddLike',
+                type: 'POST',
+                data: {
+                    userId: @CurrentUser.Id,
+                    contentId: @Model.Id },
+                },
+                success: function (response) {
+                    console.log('Liked successfully!');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error liking content:', error);
+                }
+            });
+        }  
+    </script>
+}

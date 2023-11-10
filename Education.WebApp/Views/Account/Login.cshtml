@@ -1,0 +1,31 @@
+﻿@using Education.ViewModel
+@model LoginVM
+
+
+@* <section class="form-container">
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <h3>login now</h3>
+        <p>your email <span>*</span></p>
+        <input type="email" asp-for= "Email" name="email" placeholder="enter your email" required maxlength="50" class="box">
+        <p>your password <span>*</span></p>
+        <input  asp-for="Password" type="password" placeholder="Enter password"required maxlength="20" class="box"> 
+        <input type="submit"  value="login new" name="submit" class="btn">
+    </form>
+
+</section> *@
+
+
+<section class="form-container">
+
+    <form action="" method="post" enctype="multipart/form-data" class="login">
+        <h3>welcome back!</h3>
+        <p>your email <span>*</span></p>
+        <input type="email" asp-for="Email" placeholder="enter your email" maxlength="50" required class="box">
+        <p>your password <span>*</span></p>
+        <input type="password" asp-for="Password"  placeholder="enter your password" maxlength="20" required class="box">
+        <p class="link">don't have an account? <a href="@Url.Action("Register","Index")">register now</a></p>
+        <input type="submit" name="submit" value="login now" class="btn">
+    </form>
+
+</section>
