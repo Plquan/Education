@@ -2,6 +2,8 @@ using Education.Application.Interfaces;
 using Education.Application.Repository;
 using Education.Data.EF;
 using Education.Data.Entities;
+using Education.WebApp.Models;
+using Education.WebApp.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,25 +17,19 @@ builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
 builder.Services.AddScoped<ITutorRepository,TuTorRepository>();
 builder.Services.AddScoped<IBookMarkRepository,BookmarkRepository>();
 builder.Services.AddScoped<ILikeRepository,LikeRepository>();
+builder.Services.AddScoped<ICommentRepository,CommentRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-       .AddCookie();
-
+builder.Services.AddScoped<IPhotoService, PhotoService>();
+//cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 builder.Services.AddDbContext<EducationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<EducationDbContext>();
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
-
-
-});
 
 
 
@@ -54,10 +50,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.UseEndpoints(endpoints =>
 {
@@ -66,5 +58,11 @@ app.UseEndpoints(endpoints =>
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
 });
+
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

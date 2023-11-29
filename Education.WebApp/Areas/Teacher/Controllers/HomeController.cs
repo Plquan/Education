@@ -1,4 +1,5 @@
 ﻿using Education.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Areas.Teacher.Controllers
@@ -13,7 +14,9 @@ namespace Education.WebApp.Areas.Teacher.Controllers
         }
         public IActionResult Index()
         {
+
             return View();
         }
+
     }
 }

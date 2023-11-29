@@ -72,7 +72,7 @@
         {
             <input type="hidden" value="">
 
-            <a href ="@Url.Action("Index","Content", new{ ContentId = item.Id, UserId = CurrentUser.Id})"class="box">
+            <a href ="@Url.Action("Index","Content", new{ ContentId = item.Id})"class="box">
          <i class="fas fa-play"></i>
                 <img src="@item.Thumb" alt="">
                 <h3>@item.Title</h3>

@@ -1,9 +1,11 @@
 ﻿using Education.Application.Interfaces;
 using Education.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Controllers
 {
+    [Authorize]
     public class TutorController : Controller
     {
         private readonly ITutorRepository _repository;

@@ -1,6 +1,8 @@
 ﻿using Education.Data.EF;
 using Education.Data.Entities;
 using Education.ViewModel;
+using Education.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +41,7 @@ namespace Education.WebApp.Areas.Teacher.Controllers
                     {
                         if (await _userManager.IsInRoleAsync(User, "Tutor"))
                         {
-                            return RedirectToAction("Index", "Home","Teacher");
+                            return RedirectToAction("Index", "Home");
                         }
                         else
                         {
@@ -54,6 +56,10 @@ namespace Education.WebApp.Areas.Teacher.Controllers
             }
             TempData["Error"] = "Wrong Email. Pls Try Again";
             return View(loginVM);
+        }
+        public IActionResult Register()
+        {
+            return RedirectToAction("Register", "Account");
         }
     }
 }

@@ -1,0 +1,27 @@
+﻿@using Education.ViewModel
+@model List<UserCommentVM>
+
+<section class="comments">
+
+   <h1 class="heading">your comments</h1> 
+   <div class="show-comments">
+     @foreach(var item in Model){
+      <div class="box" style="">
+                <div class="content"><span>@item.Comment.DateCreated.ToString("dd/MM/yyyy")</span><p> - @item.Content.Title - </p><a href="@Url.Action("Index","Content",new {ContentId = item.Content.Id})">view content</a></div>
+         <p class="text">@item.Comment.Message</p>
+          
+         <form action="" method="post" class="flex-btn">
+                    <a class="inline-option-btn" asp-action="Edit" asp-controller="Comment" asp-route-Id="@item.Comment.Id">edit comment</a>
+                    <a class="inline-delete-btn" href="@Url.Action("Delete","Comment",new {Id = item.Comment.Id})" onclick="return confirm('delete this comment?');">delete comment</a>
+         </form>
+         
+      </div>
+      }
+      </div>
+   
+</section>
+
+<!-- comments section ends -->
+
+
+

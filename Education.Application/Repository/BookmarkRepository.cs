@@ -35,6 +35,7 @@ namespace Education.Application.Repository
         {
             var getP = await ( from p in _context.Playlists.Include(x => x.AppUser)
                                join b in _context.Bookmarks on p.Id equals b.PlaylistId
+                               where b.UserId == UserID
                                select p).ToListAsync();
             var GetBM = new BookMarkVM() { Playlists = getP };
 

@@ -49,7 +49,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = "8D04DCE2-969A-435D-BBA4-DF3F325983DC",
-                            ConcurrencyStamp = "2143c241-c776-4b6f-a6fd-ff9151a677ca",
+                            ConcurrencyStamp = "4888e232-efe1-4f41-9c3f-12d062573587",
                             Description = "Teacher",
                             Name = "Tutor",
                             NormalizedName = "Tutor"
@@ -57,7 +57,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = "1ca97892-b6b9-426a-a8ec-c00dc4e70918",
-                            ConcurrencyStamp = "18a08220-e4c5-4d8c-8a5f-cb50e86abe59",
+                            ConcurrencyStamp = "ff53044e-d58e-4a40-9e4c-a5fd45fe5347",
                             Description = "Student",
                             Name = "Student",
                             NormalizedName = "Student"
@@ -83,8 +83,8 @@ namespace Education.Data.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -125,13 +125,13 @@ namespace Education.Data.Migrations
                         {
                             Id = "69BD714F-9576-45BA-B5B7-F00649BE00DE",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6cf23fa9-4e7a-4c6d-955f-197a13aadd17",
+                            ConcurrencyStamp = "d71219b5-c48c-481b-bdf8-416126f2ed0e",
                             Email = "phamlequan118@gmail.com",
                             EmailConfirmed = true,
                             Image = "/images/pic-1.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "phamlequan118@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOy2aTY32N9muVCM5lEZvs5eT13epjXBUwy7N+4Wp4HxAMr8YdBrm45H4r3gMvH3IA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEI5K4iDwgtnZBlsQmZJEut3cNl2tg2aIToZ4drKVnG5EnCdCdwSvBgdlZyXvXn6Ymg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -141,13 +141,13 @@ namespace Education.Data.Migrations
                         {
                             Id = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c6174dac-55a7-4a46-a39b-1e26fadf1c0a",
+                            ConcurrencyStamp = "f393f5e8-3d3e-4d95-b956-0708e316e40a",
                             Email = "Levanquan118@gmail.com",
                             EmailConfirmed = true,
                             Image = "/images/pic-7.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "Levanquan118@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAELzAJl2IJD3cFYAJTmSlE46oIxeqnoyh7XyWzZSBtVIPfZZm0bywb5qngZfxM0jVuw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFEAVBEBRCYErHHBhpCce+5dYAtXJLWlM/E5pY9qVbLShaO37HCErcLq1fFAVviYAQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -218,7 +218,7 @@ namespace Education.Data.Migrations
                         {
                             Id = 1,
                             ContentId = 1,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6384),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2820),
                             Message = "xin chao casc ban",
                             UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918"
                         },
@@ -226,10 +226,39 @@ namespace Education.Data.Migrations
                         {
                             Id = 2,
                             ContentId = 2,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6386),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2822),
                             Message = "xin chao casc ban 2",
                             UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918"
                         });
+                });
+
+            modelBuilder.Entity("Education.Data.Entities.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("Education.Data.Entities.Content", b =>
@@ -279,7 +308,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6272),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2757),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -290,7 +319,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6274),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2759),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -301,7 +330,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6276),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2760),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -312,7 +341,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6277),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2761),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -323,7 +352,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 5,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6280),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2762),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -334,7 +363,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 6,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6281),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2763),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -345,7 +374,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 7,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6282),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2763),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -356,7 +385,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 8,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6284),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2764),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -414,8 +443,8 @@ namespace Education.Data.Migrations
 
                     b.Property<string>("Thumb")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -436,7 +465,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6222),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2734),
                             Description = "Description",
                             Status = 1,
                             Thumb = "/images/thumb-1.png",
@@ -446,7 +475,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2023, 11, 4, 16, 57, 32, 71, DateTimeKind.Local).AddTicks(6235),
+                            DateCreated = new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2741),
                             Description = "Description",
                             Status = 1,
                             Thumb = "/images/thumb-2.png",

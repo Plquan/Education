@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Education.ViewModel
+namespace Education.WebApp.Models
 {
     public class LoginVM
     {

@@ -1,9 +1,5 @@
 ﻿using Education.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Education.Data.Enum;
 
 namespace Education.ViewModel
 {

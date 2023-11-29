@@ -38,15 +38,38 @@ namespace Education.Application.Repository
             return _context.SaveChanges() > 0;
         }
 
-        public async Task<ContentVM> GetById(int ContentId,string userId)
+        public async Task<List<Content>> GetAll()
+        {
+           return await _context.Contents.ToListAsync();
+        }
+
+        public async Task<PlaylistDetailVM> GetAllByPlaylist(int PlaylistId)
+        {
+            var PlaylistDetail = await _context.Playlists.Include(x => x.AppUser).Where(i => i.Id == PlaylistId).FirstOrDefaultAsync();
+            var PlaylistContent = await _context.Contents.Where(x => x.PlaylistId == PlaylistId).ToListAsync();
+
+            var DetailPlaylist = new PlaylistDetailVM()
+            {
+                Id = PlaylistId,
+                Title = PlaylistDetail.Title,
+                Description = PlaylistDetail.Description,
+                Thumb = PlaylistDetail.Thumb,
+                DateCreated = PlaylistDetail.DateCreated,
+                AppUser = PlaylistDetail.AppUser,
+                Contents = PlaylistContent,
+            };
+            return DetailPlaylist;
+        }
+
+        public async Task<ContentVM> GetById(int ContentId,string CuruserId)
         {
             var content = await _context.Contents.Include(x => x.Playlist).ThenInclude(x => x.AppUser)
-                                .FirstOrDefaultAsync(x => x.Id == ContentId);
-            var listComment = await _context.Comments.Include(x => x.AppUser).Where(x => x.Id == ContentId).ToListAsync();
+                                .FirstOrDefaultAsync(x => x.Id == ContentId);       
             var LikeCount = await _context.Likes.Where(x => x.ContentId == ContentId).CountAsync();       
-            var currentlike = await _context.Likes.Where(i => i.ContentId == ContentId).ToListAsync();
+            var like = await _context.Likes.Where(i => i.ContentId == ContentId).ToListAsync();
             
-            var Liked = await _context.Likes.CountAsync(x => x.UserId == userId && x.ContentId == ContentId);
+            var Liked = await _context.Likes.CountAsync(x => x.UserId == CuruserId && x.ContentId == ContentId);
+            var ListComment = await _context.Comments.Where(x => x.ContentId == ContentId).ToListAsync();
 
             var DetailContent = new ContentVM()
             {
@@ -57,9 +80,9 @@ namespace Education.Application.Repository
                 Video = content.Video,
                 Thumb = content.Thumb,
                 DateCreated = content.DateCreated,
-                AppUser = content.Playlist.AppUser,
-                Comments = listComment,
-                Likes = currentlike,
+                AppUser = content.Playlist.AppUser,            
+                Likes = like,
+                Comments = ListComment,
                 UserLiked = Liked
             };
             return DetailContent;

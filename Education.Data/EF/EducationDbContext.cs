@@ -44,6 +44,7 @@ namespace Education.Data.EF
         public DbSet<Playlist> Playlists { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     
     }
 }

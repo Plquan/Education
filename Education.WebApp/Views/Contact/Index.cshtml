@@ -1,0 +1,79 @@
+﻿
+<!-- contact section starts  -->
+
+<section class="contact">
+
+    <div class="row">
+
+        <div class="image">
+            <img src="~/images/contact-img.svg" alt="">
+        </div>
+
+        <form action="" method="post">
+            <h3>get in touch</h3>
+            <input type="text" id="c_name" name="c_name" placeholder="enter your name" required maxlength="100"  class="box">
+            <input type="text" id="c_email" name="c_email" placeholder="enter your email" required maxlength="100"  class="box">
+            <input type="text" id="c_phone" name="c_phone" min="0" max="9999999999" placeholder="enter your number" required maxlength="10"  class="box">
+            <textarea id="c_message" name="c_message" class="box" placeholder="enter your message" required cols="30" rows="10" maxlength="1000"></textarea>
+            <button type="button" id="c_send" value="" class="inline-btn" name="submit">send message</button>
+        </form>
+
+    </div>
+
+    <div class="box-container">
+
+        <div class="box">
+            <i class="fas fa-phone"></i>
+            <h3>phone number</h3>
+            <a href="tel:0345392375">0345-392-375</a>          
+        </div>
+
+        <div class="box">
+            <i class="fas fa-envelope"></i>
+            <h3>email address</h3>
+            <a href="mailto:phamlequan118@gmail.com">phamlequan118@gmail.come</a>
+        </div>
+
+        <div class="box">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>office address</h3>
+            <a href="#">flat no. 1, a-1 building, jogeshwari, mumbai, india - 400104</a>
+        </div>
+
+
+    </div>
+
+</section>
+
+<!-- contact section ends -->
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#c_send").click(function () {
+                _name = $("#c_name").val();
+                _phone = $("#c_phone").val();
+                _email = $("#c_email").val();
+                _message = $("#c_message").val();
+                $.ajax({
+                    url: "/Contact/Create",
+                    type: "POST",
+                    data: { name: _name, phone: _phone, email: _email, message: _message },
+                    success: function (result) {
+                        if (result) {
+                            $("#c_name").val("");
+                            $("#c_phone").val("");
+                            $("#c_email").val("");
+                            $("#c_message").val("");
+                            //alert("Gui thanh cong");
+                            alert('Gửi thành công');
+                        }
+                        else {
+                            alert('Gửi không thành công');
+                            //alert("Gui khong thanh cong");
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+}

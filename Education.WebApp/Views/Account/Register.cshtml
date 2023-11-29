@@ -1,15 +1,15 @@
-﻿@using Education.ViewModel
+﻿@using Education.WebApp.Models
 @model RegisterVM
 
-
+      
 <section class="form-container">
 
-    <form class="register" action="" method="post" enctype="multipart/form-data">
+    <form class="register" action="" method="post">
         <h3>register new</h3>
         <div class="flex">
             <div class="col">
                 <p>your name <span>*</span></p>
-                <input type="text"  asp-for="Name" placeholder="eneter your name" maxlength="50" required class="box"/>
+                <input type="text"  asp-for="Name" placeholder="eneter your name" maxlength="500" required class="box"/>
                 <p>your profession <span>*</span></p>
                 <select  asp-for="Profession" class="box" required>
                     <option value="" disabled selected>-- select your profession</option>
@@ -18,18 +18,18 @@
 
                 </select>
                 <p>your email <span>*</span></p>
-                <input type="email" asp-for="Email"  placeholder="enter your email" maxlength="20" required class="box"/>
+                <input type="email" asp-for="Email"  placeholder="enter your email" maxlength="260" required class="box"/>
             </div>
             <div class="col">
                 <p>your password <span>*</span></p>
-                <input type="password" asp-for="Password"  placeholder="enter your password" maxlength="20" required class="box"/>
+                <input type="password" asp-for="Password"  placeholder="enter your password" maxlength="200" required class="box"/>
                 <p>confirm password <span>*</span></p>
-                <input type="password" asp-for="ConfirmPassword" nplaceholder="confirm your password" maxlength="20" required class="box"/>
+                <input type="password" asp-for="ConfirmPassword" nplaceholder="confirm your password" maxlength="200" required class="box"/>
                 <p>select pic <span>*</span></p>
-                <input type="file"  asp-for="Image" accept="image/*" required class="box"/>
+                <input type="file" asp-for="Image"  required class="box"/>
             </div>
         </div>
-        <p class="link">already have an account? <a href="@Url.Action("Login","Acount")">login now</a></p>
+        <p class="link">already have an account? <a href="@Url.Action("Login","Account")">login now</a></p>
         <input type="submit" name="submit" value="register now" class="btn">
     </form>
 

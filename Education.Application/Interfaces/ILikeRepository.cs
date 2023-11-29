@@ -14,5 +14,6 @@ namespace Education.Application.Interfaces
         bool Delete(Like like);
         Task<List<LikeVM>> GetbyId(string UserId);
         Task<List<Like>> GetAll();
+        Task <Like> GetContent(int ContentId, string UserId);
     }
 }

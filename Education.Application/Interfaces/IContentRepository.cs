@@ -14,6 +14,8 @@ namespace Education.Application.Interfaces
         bool Update(Content content);
         bool Delete(Content content);
         Task<ContentVM> GetById(int ContentId, string userId);
+        Task<List<Content>> GetAll();
+        Task<PlaylistDetailVM> GetAllByPlaylist(int playlistId);
 
     }
 }

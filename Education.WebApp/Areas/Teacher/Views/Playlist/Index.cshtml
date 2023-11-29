@@ -1,0 +1,56 @@
+﻿@using Education.Data.Entities
+@model List<Playlist>
+
+<section class="playlists">
+
+    <h1 class="heading">added playlists</h1>
+
+    <div class="box-container">
+
+        <div class="box" style="text-align: center;">
+            <h3 class="title" style="margin-bottom: .5rem;">create new playlist</h3>
+            <a asp-action="Create" asp-controller ="Playlist" class="btn">add playlist</a>
+        </div>
+
+   @foreach(var item in Model){
+        <div class="box">
+            <div class="flex">
+                    <div>
+                        @{
+                            var statusColor = (item.Status == Education.Data.Enum.Status.Active) ? "limegreen" : "red";
+                        }
+
+                        <i class="fas fa-circle-dot" style="color:@statusColor"></i>
+                        <span>@item.Status</span>
+                    </div>
+
+                    <div><i class="fas fa-calendar"></i><span>@item.DateCreated.ToString("dd/MM/yyyy")</span></div>
+            </div>
+            <div class="thumb">
+                <span>@item.Contents.Count video</span>
+                <img src="@item.Thumb" alt="">
+            </div>
+            <h3 class="title">@item.Title</h3>
+              @*   @{
+                    var maxDescriptionLength = 50; 
+                    var description = item.Description; 
+
+                    if (description.Length > maxDescriptionLength)
+                    {
+                        description = description.Substring(0, maxDescriptionLength) + "...";
+                    }
+                } *@
+            <p class="description"> @item.Description </p>
+            <form action="" method="post" class="flex-btn">
+                <input type="hidden" name="playlist_id" value="<?= $playlist_id; ?>">
+                <a asp-action="Edit" asp-route-Id ="@item.Id" class="option-btn">update</a>
+                <a asp-action="Remove" asp-route-Id ="@item.Id" class="delete-btn" onclick="return confirm('delete this playlist?');" name="delete">delete</a>
+            </form>
+            <a asp-action="Index" asp-controller="Content" asp-route-Id ="@item.Id" class="btn">view playlist</a>
+        </div>
+        }
+        
+
+    </div>
+
+</section>

@@ -1,0 +1,24 @@
+﻿@using Education.ViewModel.PlaylistViewModel
+@model CreatePlaylistVM
+
+<section class="playlist-form">
+
+    <h1 class="heading">create playlist</h1>
+
+    <form method="post" asp-action="Create" enctype="multipart/form-data">
+        <p>playlist status <span>*</span></p>
+        <select asp-for="Status" class="box" required>
+            <option value="" selected disabled>-- select status</option>
+            <option value="active">active</option>
+            <option value="deactive">deactive</option>
+        </select>
+        <p>playlist title <span>*</span></p>
+        <input type="text" asp-for="Title" maxlength="100" required placeholder="enter playlist title" class="box">
+        <p>playlist description <span>*</span></p>
+        <textarea asp-for="Description" class="box" required placeholder="write description" maxlength="1000" cols="30" rows="10"></textarea>
+        <p>playlist thumbnail <span>*</span></p>
+        <input asp-for = "Thumb" type="file" required class="box">
+        <input type="submit" value="create playlist" name="submit" class="btn">
+    </form>
+
+</section>

@@ -1,10 +1,12 @@
 ﻿using Education.Application.Interfaces;
 using Education.Data.Entities;
 using Education.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Controllers
 {
+
     public class PlaylistController : Controller
     {
         private readonly IPlaylistRepository _playlistRepository;

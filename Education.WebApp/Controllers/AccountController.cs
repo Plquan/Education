@@ -1,6 +1,8 @@
 ﻿using Education.Data.EF;
 using Education.Data.Entities;
-using Education.ViewModel;
+
+using Education.WebApp.Models;
+using Education.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +16,14 @@ namespace Education.WebApp.Controllers
         public readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountController(EducationDbContext Context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHttpContextAccessor httpContextAccessor)
+        private readonly IPhotoService _photoservice;
+        public AccountController(EducationDbContext Context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHttpContextAccessor httpContextAccessor, IPhotoService photoService )
         { 
             _userManager = userManager;
             _Context = Context;
             _signInManager = signInManager;
             _httpContextAccessor = httpContextAccessor;
+            _photoservice = photoService;
         }
         public IActionResult Login()
         {
@@ -34,12 +38,11 @@ namespace Education.WebApp.Controllers
             {
                 var checkpass = await _userManager.CheckPasswordAsync(User, loginVM.Password);
                 if (checkpass)
-                {
-                    _httpContextAccessor.HttpContext?.Session.SetString("UserId",User.Id);
+                {                           
                     
                     var result = await _signInManager.PasswordSignInAsync(User, loginVM.Password, false, false);
                     if (result.Succeeded)
-                    {
+                    { 
                         if (await _userManager.IsInRoleAsync(User, "Student"))
                         {
                             return RedirectToAction("Index", "Home");
@@ -69,6 +72,7 @@ namespace Education.WebApp.Controllers
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
             var checkemail = await _userManager.FindByEmailAsync(registerVM.Email);
+
             if (checkemail != null)
             {
                 TempData["Error"] = "This email address is already in use";
@@ -78,7 +82,7 @@ namespace Education.WebApp.Controllers
             {
                 UserName = registerVM.Name,
                 Email = registerVM.Email,
-                Image = "/images/" + registerVM.Image,               
+                Image = "/images/" + registerVM.Image,     
             };
               var NewUser = await _userManager.CreateAsync(User,registerVM.Password);
             if (NewUser.Succeeded)

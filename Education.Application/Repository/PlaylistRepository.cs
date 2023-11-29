@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Education.ViewModel;
+using Education.ViewModel.PlaylistViewModel;
 
 namespace Education.Application.Repository
 {
@@ -19,16 +20,51 @@ namespace Education.Application.Repository
         {
             _context = context;
         }
-        public bool Add(Playlist playlist)
+        public Task<int> Add(Playlist playlist)
         {
           _context.Add(playlist);
-            return _context.SaveChanges() > 0;
+            return _context.SaveChangesAsync();
         }
 
-        public bool Delete(Playlist playlist)
+        public  Task<int> Delete(int PlaylistId)
         {
-            _context.Remove(playlist);
-            return _context.SaveChanges() > 0;
+            var playlist = _context.Playlists
+              .Include(x => x.Bookmarks)
+           .Include(p => p.Contents)
+               .ThenInclude(c => c.Comments)
+           .Include(p => p.Contents)
+               .ThenInclude(c => c.Likes)
+           .FirstOrDefault(p => p.Id == PlaylistId);
+
+            if (playlist != null)
+            {
+                foreach (var item in playlist.Bookmarks)
+                {
+                    _context.Bookmarks.Remove(item);
+                }
+
+                foreach (var content in playlist.Contents)
+                {
+                    // Xóa comment
+                    foreach (var comment in content.Comments)
+                    {
+                        _context.Comments.Remove(comment);
+                    }
+
+                    // Xóa like
+                    foreach (var like in content.Likes)
+                    {
+                        _context.Likes.Remove(like);
+                    }
+
+                    // Xóa content
+                    _context.Contents.Remove(content);
+                }                                
+            }
+           
+            // Xóa playlist       
+            _context.Playlists.Remove(playlist);
+            return _context.SaveChangesAsync();
         }
 
         public async Task<List<PlaylistVM>> GetAll()
@@ -45,11 +81,12 @@ namespace Education.Application.Repository
             return Getplaylist;
         }
 
-       
-        public bool Update(Playlist playlist)
+
+        public async Task<int> Update(Playlist playlist)
         {
+              
             _context.Update(playlist);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync();
         }
 
        public async Task<PlaylistDetailVM> GetContentById(int PlaylistId)
@@ -70,6 +107,27 @@ namespace Education.Application.Repository
             return DetailPlaylist;
         }
 
-  
+        public async Task<List<Playlist>> GetbyUserId(string UserId)
+        {
+            var GetP = await (from p in _context.Playlists.Where(x => x.UserId == UserId)
+                               select new Playlist()
+                               {
+                                   Id = p.Id,
+                                   Title = p.Title,
+                                   Description = p.Description,
+                                   Thumb= p.Thumb,
+                                   DateCreated = p.DateCreated,
+                                   Status = p.Status,
+                                   Contents = p.Contents
+                               }
+                        ).ToListAsync();
+            return GetP;
+        }
+
+        public async Task<Playlist> GetbyId(int Id)
+        {
+            var getp = await _context.Playlists.Include(x => x.Contents).FirstOrDefaultAsync(x => x.Id == Id);
+            return getp;
+        }
     }
 }

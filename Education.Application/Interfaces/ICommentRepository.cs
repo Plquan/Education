@@ -1,4 +1,5 @@
 ﻿using Education.Data.Entities;
+using Education.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,13 @@ namespace Education.Application.Interfaces
 {
     public interface ICommentRepository
     {
-        bool Add(Comment comments);
-        bool Update(Comment comments);
-        bool Delete(Comment comments);
-        Task<List<Comment>> GetbyId(string userId);
+        Task<int> Add(Comment comments);
+        Task<int> Update(Comment comments);
+        Task<int> Delete(int Id);
+        Task<List<UserCommentVM>> GetbyId(string CuruserId);
         Task<List<Comment>> GetAll();
+        Task<Comment> GetCommentbyId(int CommentId);
+        Task<List<Comment>> GetAllCommentByTutor(string TutorId);
 
     }
 }

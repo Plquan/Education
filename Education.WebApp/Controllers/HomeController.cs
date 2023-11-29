@@ -4,6 +4,7 @@ using Education.Data.Entities;
 using Education.Data.Enum;
 using Education.ViewModel;
 using Education.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -47,7 +49,6 @@ namespace Education.WebApp.Controllers
                 LikeCounts = likes,
                 Bookmarks = BookMarks  
                 };
-
                 return View(UserDetail);
             }
 
@@ -55,8 +56,8 @@ namespace Education.WebApp.Controllers
             
                      
         }
-      
-        public IActionResult About()
+    
+            public IActionResult About()
         {
             return View();
         }

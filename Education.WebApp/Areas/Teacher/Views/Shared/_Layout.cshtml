@@ -1,19 +1,30 @@
-﻿
+﻿@using Education.Data.Entities;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+
+    var CurrentUser = await UserManager.GetUserAsync(User);
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>home</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
 
-   <!-- font awesome cdn link  -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="~/css/admin_style.css">
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="~/css/admin_style.css">
+
 
 </head>
 
@@ -23,11 +34,11 @@
 
         <section class="flex">
 
-            <a href="dashboard.php" class="logo">Admin.</a>
+            <a href="home.php" class="logo">Educa.</a>
 
-            <form action="search_page.php" method="post" class="search-form">
-                <input type="text" name="search" placeholder="search here..." required maxlength="100">
-                <button type="submit" class="fas fa-search" name="search_btn"></button>
+            <form action="search_course.php" method="post" class="search-form">
+                <input type="text" name="search_course" placeholder="search courses..." required maxlength="100">
+                <button type="submit" class="fas fa-search" name="search_course_btn"></button>
             </form>
 
             <div class="icons">
@@ -38,32 +49,24 @@
             </div>
 
             <div class="profile">
-                <?php
-                $select_profile = $conn->prepare("SELECT * FROM `tutors` WHERE id = ?");
-                $select_profile->execute([$tutor_id]);
-                if($select_profile->rowCount() > 0){
-                $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-                ?>
-                <img src="../uploaded_files/<?= $fetch_profile['image']; ?>" alt="">
-                <h3><?= $fetch_profile['name']; ?></h3>
-                <span><?= $fetch_profile['profession']; ?></span>
-                <a href="profile.php" class="btn">view profile</a>
-                <div class="flex-btn">
-                    <a href="@Url.Action("Login","Account")" class="option-btn">login</a>
-                    <a href="register.php" class="option-btn">register</a>
-                </div>
-                <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
-                <?php
-                }else{
-                ?>
-                <h3>please login or register</h3>
-                <div class="flex-btn">
-                    <a href="login.php" class="option-btn">login</a>
-                    <a href="register.php" class="option-btn">register</a>
-                </div>
-                <?php
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <img src="@CurrentUser.Image" alt="">
+                    <h3>@CurrentUser.UserName</h3>
+                    <span>student</span>
+                    <a asp-action="Index" asp-controller="Profile"  class="btn">view profile</a>
+                    <a href="/Account/Register" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
                 }
-                ?>
+                else
+                {
+                    <h3>please login or register</h3>
+                    <div class="flex-btn">
+                        <a asp-controller="Account" asp-action="Login" class="option-btn">login</a>
+                        <a asp-controller="Account" asp-action="Register" class="option-btn">register</a>
+                    </div>
+                }
+
             </div>
 
         </section>
@@ -80,49 +83,35 @@
         </div>
 
         <div class="profile">
-            <?php
-            $select_profile = $conn->prepare("SELECT * FROM `tutors` WHERE id = ?");
-            $select_profile->execute([$tutor_id]);
-            if($select_profile->rowCount() > 0){
-            $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
-            ?>
-            <img src="../uploaded_files/<?= $fetch_profile['image']; ?>" alt="">
-            <h3><?= $fetch_profile['name']; ?></h3>
-            <span><?= $fetch_profile['profession']; ?></span>
-            <a href="profile.php" class="btn">view profile</a>
-            <?php
-            }else{
-            ?>
-            <h3>please login or register</h3>
-            <div class="flex-btn">
-                <a href="login.php" class="option-btn">login</a>
-                <a href="register.php" class="option-btn">register</a>
-            </div>
-            <?php
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <img src="@CurrentUser.Image" alt="">
+                <h3>@CurrentUser.UserName</h3>
+                <span>student</span>
+                <a asp-action="GetUserDetail" asp-controller="Home" asp-route-Id="@CurrentUser.Id" class="btn">view profile</a>
             }
-            ?>
+            else
+            {
+                <img src="~/images/pic-1.jpg" alt="">
+            }
         </div>
 
         <nav class="navbar">
-            <a href="dashboard.php"><i class="fas fa-home"></i><span>home</span></a>
-            <a href="playlists.php"><i class="fa-solid fa-bars-staggered"></i><span>playlists</span></a>
-            <a href="contents.php"><i class="fas fa-graduation-cap"></i><span>contents</span></a>
-            <a href="comments.php"><i class="fas fa-comment"></i><span>comments</span></a>
+            <a href="@Url.Action("Index","Home")"><i class="fas fa-home"></i><span>home</span></a>
+            <a href="@Url.Action("Index","Playlist")"><i class="fa-solid fa-bars-staggered"></i><span>playlists</span></a>
+            <a href="@Url.Action("Index","Comment")"><i class="fas fa-comment"></i><span>comments</span></a>
             <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>logout</span></a>
         </nav>
 
     </div>
 
-    <!-- side bar section ends -->
-
     @RenderBody();
 
     <!-- side bar section ends -->
+    <!-- custom js file link  -->
+    <script src="~/js/admin_script.js"></script>
+    <script src="~/lib/jquery-3.6.4.min.js"></script>
 
-
-   <!-- custom js file link  -->
-   <script src="~/js/admin_script.js"></script>
-   <script src="~/js/jquery-3.7.1.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

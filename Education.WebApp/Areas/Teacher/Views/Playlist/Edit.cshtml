@@ -1,0 +1,39 @@
+﻿@using Education.ViewModel.PlaylistViewModel
+@using Education.Data.Enum
+@model EditPlaylistVM
+<section class="playlist-form">
+
+    <h1 class="heading">update playlist</h1>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for ="@Model.UserId">
+        <p>playlist status <span>*</span></p>
+        <select asp-for="Status" class="box" required>
+            <option selected>@Model.Status</option>
+            @if(Model.Status == Status.Active)
+            {
+                <option>InActive</option>
+            }
+            else
+            { 
+                <option>Active</option> 
+            }
+          
+        </select>
+        <p>playlist title <span>*</span></p>
+        <input type="text" name="title" maxlength="100" required placeholder="enter playlist title" value="@Model.Title" class="box">
+        <p>playlist description <span>*</span></p>
+        <textarea name="description" class="box" required placeholder="write description" maxlength="1000" cols="30" rows="10">@Model.Description</textarea>
+        <p>playlist thumbnail <span>*</span></p>
+        <div class="thumb">
+            <img src="@Model.Url" alt="">
+        </div>
+   
+        <input type="file" asp-for="Thumb" class="box">
+        <input type="submit" value="update playlist" name="submit" class="btn">
+        <div class="flex-btn">
+            <input type="submit" value="delete" class="delete-btn" onclick="return confirm('delete this playlist?');" name="delete">
+            <a asp-action="Index" class="option-btn">cancel</a>
+        </div>
+    </form>
+</section>

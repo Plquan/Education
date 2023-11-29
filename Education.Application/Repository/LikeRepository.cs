@@ -24,11 +24,12 @@ namespace Education.Application.Repository
             return _context.SaveChanges() > 0;
         }
 
-        public bool Delete(Like like)
+        public  bool Delete(Like like)
         {
-            _context.Remove(like);
+             _context.Remove(like);      
             return _context.SaveChanges() > 0;
         }
+
 
         public async Task<List<Like>> GetAll()
         {
@@ -36,20 +37,24 @@ namespace Education.Application.Repository
             return GetAll;
         }
 
-        public async Task<List<LikeVM>> GetbyId(string UserId)
+        public async Task<List<LikeVM>> GetbyId(string Id)
         {
-            var getLike = await (from c in _context.Contents.Include(x => x.Playlist).ThenInclude(x => x.AppUser)
-                                 join l in _context.Likes on c.Id equals l.ContentId
-                                 join u in _context.Users on l.UserId equals u.Id
+            var getlike = await (from l in _context.Likes.Where(l => l.UserId == Id)
                                  select new LikeVM()
                                  {
-                                     AppUser = c.Playlist.AppUser,
-                                     Contents = c
-                                 }
-                                 ).ToListAsync();
-            
+                                     AppUser = l.Content.Playlist.AppUser,
+                                     Contents = l.Content
 
-            return getLike;
+                                 }
+                ).ToListAsync();
+
+            return getlike;
+        }
+
+        public async Task<Like> GetContent(int ContentId, string UserId)
+        {
+            var GetContent = await _context.Likes.FirstOrDefaultAsync(x => x.ContentId == ContentId && x.UserId == UserId);    
+            return GetContent;
         }
     }
 }

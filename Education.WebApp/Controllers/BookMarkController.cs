@@ -1,21 +1,27 @@
 ﻿using Education.Application.Interfaces;
 using Education.Data.Entities;
 using Education.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
+    [Authorize]
     public class BookMarkController : Controller
     {
         private readonly IBookMarkRepository _bookMarkRepository;
-        public BookMarkController(IBookMarkRepository bookMarkRepository)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public BookMarkController(IBookMarkRepository bookMarkRepository, IHttpContextAccessor contextAccessor)
         {
             _bookMarkRepository = bookMarkRepository;
+            _contextAccessor = contextAccessor;
         }
 
-        public async Task<IActionResult> Index(string UserId)
+        public async Task<IActionResult> Index()
         {
-            BookMarkVM getbyId = await _bookMarkRepository.GetbyId(UserId);
+            var Id = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            BookMarkVM getbyId = await _bookMarkRepository.GetbyId(Id);
             return View(getbyId);
         }
      

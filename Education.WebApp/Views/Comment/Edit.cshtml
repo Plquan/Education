@@ -1,0 +1,13 @@
+﻿@using Education.Data.Entities
+@model Comment
+
+<section class="edit-comment">
+    <h1 class="heading">edit comment</h1>
+    <form asp-action="Edit" method="post">
+        <textarea asp-for="Message"  class="box" maxlength="1000" required placeholder="please enter your comment" cols="30" rows="10"></textarea>
+        <div class="flex">
+            <a href="@Url.Action("Index","Comment")" class="inline-option-btn">cancel edit</a>
+            <button type="submit" value="update now" class="inline-btn">update now</button>
+        </div>
+    </form>
+</section>

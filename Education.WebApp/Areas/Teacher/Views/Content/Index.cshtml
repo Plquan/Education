@@ -1,0 +1,58 @@
+﻿@using Education.ViewModel
+@model PlaylistDetailVM
+<section class="playlist-details">
+
+    <h1 class="heading">playlist details</h1>
+
+    <div class="row">
+        <div class="thumb">
+            <span>@Model.Contents.Count video</span>
+            <img src="@Model.Thumb" alt="">
+        </div>
+        <div class="details">
+            <h3 class="title">@Model.Title</h3>
+            <div class="date"><i class="fas fa-calendar"></i><span>@Model.DateCreated.ToString("dd/MM/yyyy")</span></div>
+            <div class="description">@Model.Description</div>
+            <form action="" method="post" class="flex-btn">
+                <a href="update_playlist.php?get_id=<?= $playlist_id; ?>" class="option-btn">add new content</a>
+       
+            </form>
+        </div>
+    </div>
+
+</section>
+
+
+<section class="contents">
+
+    <h1 class="heading">playlist videos</h1>
+
+    <div class="box-container">
+        @foreach (var item in Model.Contents)
+        {
+
+            <div class="box">
+                <div class="flex">
+                    <div>
+                        @{
+                            var statusColor = (item.Status == Education.Data.Enum.Status.Active) ? "limegreen" : "red";
+                        }
+
+                        <i class="fas fa-circle-dot" style="color:@statusColor"></i>
+                        <span>@item.Status</span>
+                    </div>
+                    <div><i class="fas fa-calendar"></i><span>@item.DateCreated.ToString("dd/MM/yyyy")</span></div>
+                </div>
+                <img src="@item.Thumb" class="thumb" alt="">
+                <h3 class="title">@item.Title</h3>
+                <form action="" method="post" class="flex-btn">
+                    <a href="update_content.php?get_id=<?= $video_id; ?>" class="option-btn">update</a>
+                    <input type="submit" value="delete" class="delete-btn" onclick="return confirm('delete this video?');" name="delete_video">
+                </form>
+                <a href="view_content.php?get_id=<?= $video_id; ?>" class="btn">watch video</a>
+            </div>
+        }
+
+    </div>
+
+</section>

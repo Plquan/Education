@@ -1,5 +1,13 @@
-﻿@using Education.ViewModel
+﻿@using Education.Data.Entities;
+@using Education.ViewModel
 @model List<LikeVM>
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<AppUser> UserManager
+
+@{
+
+    var CurrentUser = await UserManager.GetUserAsync(User);
+}
 
 <section class="liked-videos">
 
@@ -10,17 +18,17 @@
        @foreach(var item in Model){
         <div class="box">
             <div class="tutor">
-                <img src="@item.AppUser.Image"alt="">
+                <img src="@item.AppUser.Image" alt="">
                 <div>
                     <h3>@item.AppUser.UserName</h3>
-                    <span><?= $fetch_contents['date']; ?></span>
+                    <span>@item.Contents.DateCreated.ToString("dd/MM/yyyy")</span>
                 </div>
             </div>
             <img src="@item.Contents.Thumb" alt="" class="thumb">
             <h3 class="title">@item.Contents.Title</h3>
             <form action="" method="post" class="flex-btn">
                 <a href="@Url.Action("Index","Content",new {ContentId = item.Contents.Id, UserId = item.AppUser.Id})" class="inline-btn">watch video</a>
-                    <input value="Remove" type ="submit"  class="inline-delete-btn">
+                    <a href="@Url.Action("Remove","Like",new {ContentId = item.Contents.Id, UserId = CurrentUser.Id})" onclick="return confirm('Delete this Content ?');" class="inline-delete-btn">Remove</a>
                            
             </form>
                 

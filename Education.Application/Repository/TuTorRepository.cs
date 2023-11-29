@@ -40,17 +40,18 @@ namespace Education.Application.Repository
             //return GetTutor;
 
 
-            var usersWithTotalContent = await (from u in _context.Users
-                                               join p in _context.Playlists on u.Id equals p.UserId
-                                               join c in _context.Contents on p.Id equals c.PlaylistId
-                                               join l in _context.Likes on c.Id equals l.ContentId
+            var usersWithTotalContent = await (from u in _context.Users 
+                                               join r in _context.UserRoles on u.Id equals r.UserId
+                                               join ur in _context.Roles on r.RoleId equals ur.Id
+                                               where ur.Name == "Tutor"
+                                              
                                                select new TutorVM()
                                                {
                                                    UserId = u.Id,
                                                    UserName = u.UserName,
                                                    UserImage = u.Image,
                                                    PlaylistCount = u.Playlists.Count,
-                                                   LikeCount = p.Contents.SelectMany(c => c.Likes).Count(),
+                                                   LikeCount = u.Playlists.SelectMany(c => c.Contents.SelectMany(x => x.Likes)).Count(),
                                                    VideoCount = u.Playlists.SelectMany(playlist => playlist.Contents).Count()
                                                }).Distinct().ToListAsync();
             return usersWithTotalContent;

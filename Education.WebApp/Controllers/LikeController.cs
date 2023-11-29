@@ -1,31 +1,40 @@
 ﻿using Education.Application.Interfaces;
 using Education.Data.Entities;
 using Education.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
+    [Authorize]
     public class LikeController : Controller
     {
         private readonly ILikeRepository _likeRepository;
-        public LikeController(ILikeRepository likeRepository)
+        private readonly IHttpContextAccessor _httpcontextAccessor;
+        public LikeController(ILikeRepository likeRepository, IHttpContextAccessor httpcontextAccessor)
         {
             _likeRepository = likeRepository;
+            _httpcontextAccessor = httpcontextAccessor;
         }
-            
-        public async Task<IActionResult> Index(string UserId)
+
+        public async Task<IActionResult> Index()
         {
-            List<LikeVM> vm = await _likeRepository.GetbyId(UserId);
+            var Id = _httpcontextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            List<LikeVM> vm = await _likeRepository.GetbyId(Id);
             return View(vm);
         }
+
+       
         public async Task<IActionResult> Remove(int ContentId,string UserId)
         {
-            var likes = new Like() { 
-              ContentId = ContentId,
-              UserId = UserId           
-            };
-            _likeRepository.Delete(likes);
-            return View(likes);
+            var Content = await _likeRepository.GetContent(ContentId, UserId);
+            if (Content == null)
+            {
+                return View("Error");
+            }
+            _likeRepository.Delete(Content);
+            return RedirectToAction("Index");
         }
 
     }

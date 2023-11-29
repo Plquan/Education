@@ -33,11 +33,11 @@
               <div class="box">
                 <h3 class="title">likes and comments</h3>
                 <p>total likes : <span>@Model.LikeCounts</span></p>
-                <a asp-action="Index" asp-controller="Like" asp-route-UsesrId=" @CurrentUser.Id" class="inline-btn">view likes</a>
+                <a asp-action="Index" asp-controller="Like"  class="inline-btn">view likes</a>
                 <p>total comments : <span>@Model.CommentCounts</span></p>
-                <a href="comments.php" class="inline-btn">view comments</a>
+                <a asp-action="Index" asp-controller="Comment" class="inline-btn">view comments</a>
                 <p>saved playlist : <span>@Model.Bookmarks</span></p>
-                <a asp-action="Index" asp-controller="BookMark" asp-route-UsesrId =" @CurrentUser.Id" class="inline-btn">view bookmark</a>
+                <a asp-action="Index" asp-controller="BookMark" class="inline-btn">view bookmark</a>
             </div>  
         } 
 
