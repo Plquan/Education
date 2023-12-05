@@ -15,8 +15,8 @@ namespace Education.Data.Configurations
         {
             builder.ToTable("BookMarks");
             builder.HasKey(x => new { x.UserId, x.PlaylistId });
-            builder.HasOne(x => x.AppUser).WithMany(x => x.BookMarks).HasForeignKey(x => x.UserId);
-            builder.HasOne(x => x.Playlist).WithMany(x => x.Bookmarks).HasForeignKey(x => x.PlaylistId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.AppUser).WithMany(x => x.BookMarks).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Playlist).WithMany(x => x.Bookmarks).HasForeignKey(x => x.PlaylistId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

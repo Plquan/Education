@@ -11,18 +11,18 @@
 <section class="edit-comment" >
     <h1 class="heading" >edit comment</h1>
     <form action="" method="post" id="form" style="display:none">
-        <input type="hidden" name="update_id" value="<?= $fetch_edit_comment['id']; ?>">
-        <textarea name="update_box" class="box" maxlength="1000" required placeholder="please enter your comment" cols="30" rows="10"><?= $fetch_edit_comment['comment']; ?></textarea>
+        <input type="hidden" name="update_id" id="commentid">
+        <textarea id="EditMessage" class="box" maxlength="1000" required placeholder="please enter your comment" cols="30" rows="10"></textarea>
         <div class="flex">
             <a id="cancel" class="inline-option-btn">cancel edit</a>
-            <input type="submit" value="update now" name="update_now" class="inline-btn">
+            <input type="button" id="updateComment" value="update now" name="update_now" class="inline-btn">
         </div>
     </form>
 </section>
 
 
 
-    <section class="watch-video">
+<section class="watch-video" >
 
         <div class="video-details">
         <video src="@Model.Video" class="video" controls poster="@Model.Thumb" ></video>
@@ -38,16 +38,16 @@
                     <span>Tutor</span>
                 </div>
             </div>
-             <form action="" method="post" class="flex">
+        <form action="" method="post" class="flex" id="likeContainer">
                 <a asp-action="Detail" asp-controller ="Playlist" asp-route-Id ="@Model.PlaylistId" class="inline-btn">view playlist</a>
                         
                 @if (Model.UserLiked == 1)
                 {
-                <button  id="likedButton"><i class="fas fa-heart"></i><span>liked</span></button>
+                <button type="button" id="likedButton"><i class="fas fa-heart"></i><span>liked</span></button>
                 }
                 else
                 {
-                <button  id="likeButton"><i class="far fa-heart"></i><span>like</span></button>
+                <button type="button" id="likeButton"><i class="far fa-heart"></i><span>like</span></button>
                 }
              
             </form> 
@@ -57,23 +57,22 @@
     </section>
 
     <!-- watch video section ends -->  
-<section class="comments">
+<section class="comments" id="commentContainer">
 
     <h1 class="heading">add a comment</h1>
 
     <form action="" method="post" class="add-comment">
-        <input type="hidden" name="content_id" value="<?= $get_id; ?>">
-        <textarea id="c_message" name="c_message" required placeholder="write your comment..." maxlength="300" cols="30" rows="10"></textarea>
-        <button type = "button" id="addComment" class="inline-btn">add comment</button>
+        <textarea id="c_message"  required placeholder="write your comment..." maxlength="300" cols="30" rows="10"></textarea>
+        <button type="button"  id="addComment" class="inline-btn">add comment</button>
     </form>
 
-    <h1 class="heading">user comments</h1>
+    <h1 id ="UserComment" class="heading">user comments</h1>
 
-
-    <div class="show-comments">
+    <div class="show-comments" id="divComment">
+    
         @foreach (var item in Model.Comments)
         {
-            <div class="box" id="commentscontainer">
+                  <div class="box" >
                 <div class="user">
                     <img src="@item.AppUser.Image" alt="">
                     <div>
@@ -83,11 +82,10 @@
                 </div>
                 <p class="text">@item.Message</p>
                 @if (item.UserId == CurrentUser.Id)
-                {
+                {              
                     <form action="" method="post" class="flex-btn">
-                        <input type="hidden" name="comment_id" value="@item.Id">
-                        <button type="submit" class="inline-option-btn">edit comment</button>
-                        <button type="submit" name="delete_comment" class="inline-delete-btn" onclick="return confirm('delete this comment?');">delete comment</button>
+                      <button type="button" data-message="@item.Message" data-id="@item.Id" data-action="edit" class="inline-option-btn">edit comment</button>
+                        <button type="button" id="@item.Id" data-action="delete" class="inline-delete-btn">delete comment</button>
                     </form>
                 }
             </div>
@@ -100,17 +98,40 @@
 @section Scripts {
 
 
-    <script>
+    <script>//cancel edit
         $(document).ready(function () {
 
             $("#cancel").click(function () {               
-                $("#form").hide();
+                $("#form").hide("box");
+                $('html, body').animate({
+                    scrollTop: $("#UserComment").offset().top
+                },1000);
             });
 
         });
+
     </script>
 
-    <script>
+     <script> // show form edit comment
+        $(document).ready(function () {
+            $("body").on("click", ".box button[data-action='edit']", function () {
+                $("#form").show();
+                $('html, body').animate({ 
+                    scrollTop: 0            
+                });
+                var message = $(this).data("message");
+                var id = $(this).data("id");
+                $("#EditMessage").val(message);
+                $("#commentid").val(id);       
+            });
+
+        });
+    </script> 
+    
+
+
+
+    <script> // add comment
         $(document).ready(function () {
 
             $("#addComment").click(function () {
@@ -122,8 +143,100 @@
                         ContentId: @Model.Id
                     },
                     success: function (data) {
-                        alert("Succes");
-                        
+                        $("#c_message").val("");
+                        var date = moment(data.dateCreated).format("DD-MM-YYYY");
+                        html = '<div class="box">' +
+                            '<div class="user">' +
+                            ' <img src="@CurrentUser.Image" alt="">' +
+                            '<div>' +
+                            ' <h3>@CurrentUser.UserName</h3>' +
+                            '<span>' + date + '</span>' +
+                            ' </div>' +
+                            '</div>' +
+                            ' <p class="text">' + data.message + '</p>' +
+                            '<form action="" method="post" class="flex-btn">' +
+                            '<button type="button" data-message="'+ data.message +'" data-md="'+ data.id +'" data-action="edit" class="inline-option-btn">edit comment</button>' +
+                            '<button type="button" id="'+ data.id+'" data-action="delete" class="inline-delete-btn" >delete comment</button>' +
+                            '</form>' +
+                            '</div>'
+
+                        $("#divComment").append(html);
+                    },
+                    error: function (error) {
+                        alert("error");
+                    }
+
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        //delete comment
+        $(document).ready(function () {
+            $("body").on("click", ".box button[data-action='delete']", function () {
+                var clicked = $(this);
+                $.ajax({
+                    url: "/Content/DeleteComment",
+                    type: "POST",
+                    data: {
+                        CommentId: this.id
+                    },
+                    success: function (data) {
+                        clicked.closest('.box').hide("box");
+                    },
+                    error: function (error) {
+                        console.error("false");
+                    }
+
+                });
+
+
+            });
+
+        });
+    </script>
+
+    <script> // add like
+        $(document).ready(function () {
+
+            $("#likeButton").click(function () {
+                $("#likeButton").remove();
+                $("#likedButton").show();
+                $.ajax({
+                    url: "/Content/AddLike",
+                    type: "POST",
+                    data: {
+                        CurUserId: "@CurrentUser.Id",
+                        ContentId: @Model.Id
+                       },
+                    success: function (data) {
+                        window.location.reload();                    
+                    },
+                    error: function (error) {
+                        console.error("false");
+                    }
+
+                });
+            });
+        });
+    </script>
+
+
+    <script> //remove like
+        $(document).ready(function () {
+
+            $("#likedButton").click(function () {
+                $.ajax({
+                    url: "/Content/RemoveLike",
+                    type: "POST",
+                    data: {
+                        CurUserId: "@CurrentUser.Id",
+                        ContentId: @Model.Id
+                       },
+                    success: function (data) {
+                        window.location.reload();
                     },
                     error: function (error) {
                         console.error("false");

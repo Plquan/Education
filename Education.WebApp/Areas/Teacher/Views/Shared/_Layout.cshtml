@@ -94,15 +94,17 @@
             {
                 <img src="~/images/pic-1.jpg" alt="">
             }
-        </div>
+              </div>
 
         <nav class="navbar">
             <a href="@Url.Action("Index","Home")"><i class="fas fa-home"></i><span>home</span></a>
             <a href="@Url.Action("Index","Playlist")"><i class="fa-solid fa-bars-staggered"></i><span>playlists</span></a>
             <a href="@Url.Action("Index","Comment")"><i class="fas fa-comment"></i><span>comments</span></a>
+            <a href="@Url.Action("Index","Contact")"><i class="fa-solid fa-bell"></i><span>notice</span></a>
             <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>logout</span></a>
         </nav>
 
+   
     </div>
 
     @RenderBody();

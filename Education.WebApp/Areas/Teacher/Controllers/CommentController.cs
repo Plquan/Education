@@ -29,6 +29,19 @@ namespace Education.WebApp.Areas.Teacher.Controllers
             await _commentRepository.Delete(Id);
             return View();
         }
+        [HttpPost]
+        public async Task<int> DeleteComment(int CommentId)
+        {
+            try
+            {
+                await _commentRepository.Delete(CommentId);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
 
+        }
     }
 }

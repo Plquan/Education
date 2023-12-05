@@ -18,16 +18,17 @@ namespace Education.Application.Repository
         {
             _context = context;
         }
-        public bool Add(Like like)
+        public async Task<int> Add(Like like)
         {
             _context.Add(like);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync();
         }
 
-        public  bool Delete(Like like)
+        public  async Task<int> Remove(string CurUserId, int ContentId)
         {
-             _context.Remove(like);      
-            return _context.SaveChanges() > 0;
+            var getl = await _context.Likes.FirstOrDefaultAsync(x => x.UserId == CurUserId && x.ContentId == ContentId);
+            _context.Remove(getl);      
+            return  await _context.SaveChangesAsync();
         }
 
 

@@ -27,13 +27,8 @@ namespace Education.WebApp.Controllers
 
        
         public async Task<IActionResult> Remove(int ContentId,string UserId)
-        {
-            var Content = await _likeRepository.GetContent(ContentId, UserId);
-            if (Content == null)
-            {
-                return View("Error");
-            }
-            _likeRepository.Delete(Content);
+        {     
+          await _likeRepository.Remove(UserId,ContentId);
             return RedirectToAction("Index");
         }
 

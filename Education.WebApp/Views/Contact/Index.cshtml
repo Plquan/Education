@@ -65,10 +65,10 @@
                             $("#c_email").val("");
                             $("#c_message").val("");
                             //alert("Gui thanh cong");
-                            alert('Gửi thành công');
+                            toastr.success('<h2>Done</h2>');
                         }
                         else {
-                            alert('Gửi không thành công');
+                            toastr.error('<h2>Failed !</h2>');
                             //alert("Gui khong thanh cong");
                         }
                     }

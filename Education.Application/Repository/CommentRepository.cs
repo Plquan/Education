@@ -22,14 +22,7 @@ namespace Education.Application.Repository
 
         public async Task<int> Add(Comment comments)
         {
-            var Cm = new Comment() { 
-               UserId = comments.UserId,
-               ContentId = comments.ContentId,
-                Message = comments.Message,
-                DateCreated = DateTime.Now,
-            };
-
-            _context.Add(Cm);
+              _context.Add(comments);
             return await _context.SaveChangesAsync();
         }
 
@@ -81,7 +74,7 @@ namespace Education.Application.Repository
         {
            var getcm = await _context.Comments.FirstOrDefaultAsync(x => x.Id == comments.Id);          
                 getcm.Message = comments.Message;
-                getcm.DateCreated = DateTime.Now;
+                getcm.DateCreated = DateTime.UtcNow;
                
             return await _context.SaveChangesAsync();
         }

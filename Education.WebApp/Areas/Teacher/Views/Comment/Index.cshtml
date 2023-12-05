@@ -15,10 +15,39 @@
                 <div class="content"><span>@item.DateCreated.ToString("dd/MM/yyyy")</span><p> - @item.Content.Title - </p><a href="view_content.php?get_id=<?= $fetch_content['id']; ?>">view content</a></div>
             <p class="text">@item.Message</p>
             <form action="">
-                <button type="submit" asp-action="Delete" asp-controller="Comment" asp-route-Id="@item.Id" class="inline-delete-btn" onclick="return confirm('delete this comment?');">delete comment</button>
+                <button type="button" id="@item.Id" data-action="delete" class="inline-delete-btn">delete comment</button>
             </form>
         </div>
        }
     </div>
     }
 </section>
+
+@section Scripts{
+    <script>
+        //delete comment
+        $(document).ready(function () {
+            $("body").on("click", ".box button[data-action='delete']", function () {
+                var clicked = $(this);
+                $.ajax({
+                    url: "/Teacher/Comment/DeleteComment",
+                    type: "POST",
+                    data: {
+                        CommentId: this.id
+                    },
+                    success: function (data) {
+                        clicked.closest('.box').hide("box");
+                    },
+                    error: function (error) {
+                        console.error("false");
+                    }
+
+                });
+
+
+            });
+
+        });
+    </script>
+
+};

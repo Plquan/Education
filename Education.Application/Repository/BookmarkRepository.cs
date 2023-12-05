@@ -19,16 +19,18 @@ namespace Education.Application.Repository
             _context = context;
         }
 
-        public bool Add(BookMark bookMark)
+        public async Task<int> Add(BookMark bookMark)
         {
             _context.Add(bookMark);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync();
         }
 
-        public bool Delete(BookMark bookMark)
+        public async Task<int> Remove(string CurUserId, int PlaylistId)
         {
-            _context.Remove(bookMark);
-            return _context.SaveChanges() > 0;
+            var getb = await _context.Bookmarks.FirstOrDefaultAsync(b => b.UserId == CurUserId && b.PlaylistId == PlaylistId);
+                _context.Remove(getb);
+                 
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<BookMarkVM> GetbyId(string UserID)

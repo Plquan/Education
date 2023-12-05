@@ -15,8 +15,8 @@ namespace Education.Data.Configurations
         {
             builder.ToTable("Likes");
             builder.HasKey(x => new {x.UserId , x.ContentId});
-            builder.HasOne(x => x.AppUser).WithMany(x => x.Likes).HasForeignKey(x => x.UserId);
-            builder.HasOne(x => x.Content).WithMany(x => x.Likes).HasForeignKey(x => x.ContentId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.AppUser).WithMany(x => x.Likes).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Content).WithMany(x => x.Likes).HasForeignKey(x => x.ContentId).OnDelete(DeleteBehavior.NoAction);
 
         }
     }

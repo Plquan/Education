@@ -11,6 +11,7 @@ namespace Education.ViewModel
         public string Thumb { get; set; }
         public DateTime DateCreated { get; set; }
         public AppUser AppUser { get; set; }
+        public int IsBookMark { get; set; }
         public List<Content> Contents { get; set; }
     }
 }

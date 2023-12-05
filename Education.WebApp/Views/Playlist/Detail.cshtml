@@ -18,25 +18,22 @@
    <div class="row">
 
       <div class="col">
-            @*          <form action="" method="post" class="save-list">
-          <input type="hidden" name="list_id" value="<?= $playlist_id; ?>"> 
-            <?php
-               if($select_bookmark->rowCount() > 0){
-            ?>
-            <button type="submit" name="save_list"><i class="fas fa-bookmark"></i><span>saved</span></button>
-            <?php
-               }else{
-            ?>
-               <button type="submit" name="save_list"><i class="far fa-bookmark"></i><span>save playlist</span></button>
-            <?php
-               }
-            ?>
-         </form> *@
+
+            <form action="" method="post" class="save-list">
+          @if(@Model.IsBookMark == 1){
+            <button type="button" id="saved"><i class="fas fa-bookmark"></i><span>saved</span></button>
+          }
+          else{
+               <button type="button" id="save" ><i class="far fa-bookmark"></i><span>save playlist</span></button>
+          }
+            </form> 
+
          <div class="thumb">
                 <span>@Model.Contents.Count videos</span>
                 <img src="@Model.Thumb" alt="">
          </div>
       </div>
+
 
       <div class="col">
          <div class="tutor">
@@ -78,7 +75,54 @@
                 <h3>@item.Title</h3>
                 </a>
         }
-
    </div>
 
 </section>
+@section Scripts {
+    <script>
+        // add like
+        $(document).ready(function () {
+
+            $("#save").click(function () {
+                $.ajax({
+                    url: "/Playlist/AddBookMark",
+                    type: "POST",
+                    data: {
+                        CurUserId: "@CurrentUser.Id",
+                        PlaylistId: @Model.Id
+                                    },
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.error("false");
+                    }
+
+                });
+            });
+        });
+    </script>
+
+    <script>
+        // add like
+        $(document).ready(function () {
+            $("#saved").click(function () {
+                $.ajax({
+                    url: "/Playlist/RemoveBookMark",
+                    type: "POST",
+                    data: {
+                        CurUserId: "@CurrentUser.Id",
+                        PlaylistId: @Model.Id
+                                            },
+                    success: function (data) {
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        console.error("false");
+                    }
+
+                });
+            });
+        });
+    </script>
+    }

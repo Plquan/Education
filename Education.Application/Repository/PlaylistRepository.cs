@@ -10,15 +10,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Education.ViewModel;
 using Education.ViewModel.PlaylistViewModel;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Education.Application.Repository
 {
     public class PlaylistRepository : IPlaylistRepository
     {
         private readonly EducationDbContext _context;
-        public PlaylistRepository(EducationDbContext context)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public PlaylistRepository(EducationDbContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
+            _contextAccessor = contextAccessor;
         }
         public Task<int> Add(Playlist playlist)
         {
@@ -89,10 +93,12 @@ namespace Education.Application.Repository
             return await _context.SaveChangesAsync();
         }
 
-       public async Task<PlaylistDetailVM> GetContentById(int PlaylistId)
+       public async Task<PlaylistDetailVM> getDetail(int PlaylistId)
         {
+            var Id = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             var PlaylistDetail = await _context.Playlists.Include(x => x.AppUser).Where(i => i.Id == PlaylistId).FirstOrDefaultAsync();
             var PlaylistContent = await _context.Contents.Where(x => x.PlaylistId == PlaylistId).ToListAsync();
+            var BoolmarkCount = await _context.Bookmarks.CountAsync(x => x.PlaylistId == PlaylistId && x.UserId == Id);
 
             var DetailPlaylist = new PlaylistDetailVM()
             {
@@ -102,7 +108,8 @@ namespace Education.Application.Repository
                 Thumb = PlaylistDetail.Thumb,
                 DateCreated = PlaylistDetail.DateCreated,
                 AppUser = PlaylistDetail.AppUser,
-                Contents = PlaylistContent,         
+                Contents = PlaylistContent,
+                IsBookMark = BoolmarkCount,
             };
             return DetailPlaylist;
         }

@@ -130,10 +130,11 @@ namespace Education.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,14 +179,12 @@ namespace Education.Data.Migrations
                         name: "FK_BookMarks_AppUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_BookMarks_Playlists_PlaylistId",
                         column: x => x.PlaylistId,
                         principalTable: "Playlists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -231,14 +230,12 @@ namespace Education.Data.Migrations
                         name: "FK_Comments_AppUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Contents_ContentId",
                         column: x => x.ContentId,
                         principalTable: "Contents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -255,14 +252,12 @@ namespace Education.Data.Migrations
                         name: "FK_Likes_AppUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AppUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Likes_Contents_ContentId",
                         column: x => x.ContentId,
                         principalTable: "Contents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -270,8 +265,8 @@ namespace Education.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1ca97892-b6b9-426a-a8ec-c00dc4e70918", "ff53044e-d58e-4a40-9e4c-a5fd45fe5347", "Student", "Student", "Student" },
-                    { "8D04DCE2-969A-435D-BBA4-DF3F325983DC", "4888e232-efe1-4f41-9c3f-12d062573587", "Teacher", "Tutor", "Tutor" }
+                    { "1ca97892-b6b9-426a-a8ec-c00dc4e70918", "d0286e3e-5cc1-488d-8f95-34db515a9e99", "Student", "Student", "Student" },
+                    { "8D04DCE2-969A-435D-BBA4-DF3F325983DC", "d59ac540-cb68-48bf-b8b0-0faf9aa02014", "Teacher", "Tutor", "Tutor" }
                 });
 
             migrationBuilder.InsertData(
@@ -288,8 +283,8 @@ namespace Education.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1cab8792-b6b9-426a-a8ec-cabdc4e70918", 0, "f393f5e8-3d3e-4d95-b956-0708e316e40a", "Levanquan118@gmail.com", true, "/images/pic-7.jpg", false, null, "Levanquan118@gmail.com", null, "AQAAAAEAACcQAAAAEFEAVBEBRCYErHHBhpCce+5dYAtXJLWlM/E5pY9qVbLShaO37HCErcLq1fFAVviYAQ==", null, false, "", false, "HeHe" },
-                    { "69BD714F-9576-45BA-B5B7-F00649BE00DE", 0, "d71219b5-c48c-481b-bdf8-416126f2ed0e", "phamlequan118@gmail.com", true, "/images/pic-1.jpg", false, null, "phamlequan118@gmail.com", null, "AQAAAAEAACcQAAAAEI5K4iDwgtnZBlsQmZJEut3cNl2tg2aIToZ4drKVnG5EnCdCdwSvBgdlZyXvXn6Ymg==", null, false, "", false, "Quan" }
+                    { "1cab8792-b6b9-426a-a8ec-cabdc4e70918", 0, "c5bcdd7f-a46a-4182-8c01-c2403e7839aa", "Levanquan118@gmail.com", true, "/images/pic-7.jpg", false, null, "Levanquan118@gmail.com", null, "AQAAAAEAACcQAAAAEIc8sm74V+TNmGDw0pLVa8IB6B+JO6fbMGvhxncYgI+rEOgHvr8eu+0FAt21NDtgow==", null, false, "", false, "HeHe" },
+                    { "69BD714F-9576-45BA-B5B7-F00649BE00DE", 0, "9fb8d2e3-727f-47ed-9591-e910d2b1f820", "phamlequan118@gmail.com", true, "/images/pic-1.jpg", false, null, "phamlequan118@gmail.com", null, "AQAAAAEAACcQAAAAENcJsOD7nm7smb8H67yyKd3b+ynPtxXMfCWaSkYXrgFSVz+Nzs1lRPlqqSZ7JV8FZg==", null, false, "", false, "Quan" }
                 });
 
             migrationBuilder.InsertData(
@@ -297,8 +292,8 @@ namespace Education.Data.Migrations
                 columns: new[] { "Id", "DateCreated", "Description", "Status", "Thumb", "Title", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2734), "Description", 1, "/images/thumb-1.png", "HTML tutorial", "69BD714F-9576-45BA-B5B7-F00649BE00DE" },
-                    { 2, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2741), "Description", 1, "/images/thumb-2.png", "CSS tutorial", "69BD714F-9576-45BA-B5B7-F00649BE00DE" }
+                    { 1, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9086), "Description", 1, "/images/thumb-1.png", "HTML tutorial", "69BD714F-9576-45BA-B5B7-F00649BE00DE" },
+                    { 2, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9098), "Description", 1, "/images/thumb-2.png", "CSS tutorial", "69BD714F-9576-45BA-B5B7-F00649BE00DE" }
                 });
 
             migrationBuilder.InsertData(
@@ -315,14 +310,14 @@ namespace Education.Data.Migrations
                 columns: new[] { "Id", "DateCreated", "Description", "PlaylistId", "Status", "Thumb", "Title", "Video" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2757), "cai lmao", 1, 1, "/images/post-1-1.png", "HTML tutorial (Part 1)", "/images/vid-1.mp4" },
-                    { 2, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2759), "cai lmao", 1, 1, "/images/post-1-2.png", "HTML tutorial (Part 2)", "/images/vid-1.mp4" },
-                    { 3, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2760), "cai lmao", 1, 1, "/images/post-1-3.png", "HTML tutorial (Part 3)", "/images/vid-1.mp4" },
-                    { 4, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2761), "cai lmao", 1, 1, "/images/post-1-4.png", "HTML tutorial (Part 4)", "/images/vid-1.mp4" },
-                    { 5, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2762), "cai lmao", 2, 1, "/images/post-2-1.png", "HTML tutorial (Part 1)", "/images/vid-2.mp4" },
-                    { 6, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2763), "cai lmao", 2, 1, "/images/post-2-2.png", "HTML tutorial (Part 2)", "/images/vid-2.mp4" },
-                    { 7, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2763), "cai lmao", 2, 1, "/images/post-2-3.png", "HTML tutorial (Part 3)", "/images/vid-2.mp4" },
-                    { 8, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2764), "cai lmao", 2, 1, "/images/post-2-4.png", "HTML tutorial (Part 4)", "/images/vid-2.mp4" }
+                    { 1, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9122), "cai lmao", 1, 1, "/images/post-1-1.png", "HTML tutorial (Part 1)", "/images/vid-1.mp4" },
+                    { 2, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9124), "cai lmao", 1, 1, "/images/post-1-2.png", "HTML tutorial (Part 2)", "/images/vid-1.mp4" },
+                    { 3, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9125), "cai lmao", 1, 1, "/images/post-1-3.png", "HTML tutorial (Part 3)", "/images/vid-1.mp4" },
+                    { 4, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9126), "cai lmao", 1, 1, "/images/post-1-4.png", "HTML tutorial (Part 4)", "/images/vid-1.mp4" },
+                    { 5, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9126), "cai lmao", 2, 1, "/images/post-2-1.png", "HTML tutorial (Part 1)", "/images/vid-2.mp4" },
+                    { 6, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9127), "cai lmao", 2, 1, "/images/post-2-2.png", "HTML tutorial (Part 2)", "/images/vid-2.mp4" },
+                    { 7, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9128), "cai lmao", 2, 1, "/images/post-2-3.png", "HTML tutorial (Part 3)", "/images/vid-2.mp4" },
+                    { 8, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9129), "cai lmao", 2, 1, "/images/post-2-4.png", "HTML tutorial (Part 4)", "/images/vid-2.mp4" }
                 });
 
             migrationBuilder.InsertData(
@@ -330,8 +325,8 @@ namespace Education.Data.Migrations
                 columns: new[] { "Id", "ContentId", "DateCreated", "Message", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2820), "xin chao casc ban", "1cab8792-b6b9-426a-a8ec-cabdc4e70918" },
-                    { 2, 2, new DateTime(2023, 11, 24, 20, 10, 54, 438, DateTimeKind.Local).AddTicks(2822), "xin chao casc ban 2", "1cab8792-b6b9-426a-a8ec-cabdc4e70918" }
+                    { 1, 1, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9193), "xin chao casc ban", "1cab8792-b6b9-426a-a8ec-cabdc4e70918" },
+                    { 2, 2, new DateTime(2023, 12, 5, 22, 18, 40, 806, DateTimeKind.Local).AddTicks(9195), "xin chao casc ban 2", "1cab8792-b6b9-426a-a8ec-cabdc4e70918" }
                 });
 
             migrationBuilder.InsertData(

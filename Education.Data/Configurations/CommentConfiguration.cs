@@ -17,8 +17,8 @@ namespace Education.Data.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.Message).HasMaxLength(300);
-            builder.HasOne(x => x.AppUser).WithMany(x => x.Comments).HasForeignKey(x => x.UserId);
-            builder.HasOne(x => x.Content).WithMany(x => x.Comments).HasForeignKey(x => x.ContentId).OnDelete(DeleteBehavior.Restrict);       
+            builder.HasOne(x => x.AppUser).WithMany(x => x.Comments).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Content).WithMany(x => x.Comments).HasForeignKey(x => x.ContentId).OnDelete(DeleteBehavior.NoAction);       
 
         }
     }

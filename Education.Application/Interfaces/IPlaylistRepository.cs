@@ -17,6 +17,6 @@ namespace Education.Application.Interfaces
         Task<List<PlaylistVM>> GetAll();
         Task<List<Playlist>> GetbyUserId(string UserId);
         Task<Playlist> GetbyId(int Id);
-        Task<PlaylistDetailVM> GetContentById(int playlistId);
+        Task<PlaylistDetailVM> getDetail(int playlistId);
     }
 }

@@ -118,7 +118,7 @@ namespace Education.WebApp.Areas.Teacher.Controllers
         [HttpGet]
         public async Task<IActionResult> Detail(int Id)
         {
-            PlaylistDetailVM list = await _playlistRepository.GetContentById(Id);
+            PlaylistDetailVM list = await _playlistRepository.getDetail(Id);
             return View(list);
         }
 

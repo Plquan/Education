@@ -14,13 +14,15 @@ namespace Education.WebApp.Controllers
     public class ContentController : Controller
     {
         private readonly IContentRepository _contentRepository;
-        private readonly EducationDbContext _context; 
+        private readonly ILikeRepository _likeRepository;
         private readonly IHttpContextAccessor _contextAccessor;
-        public ContentController(IContentRepository contentRepository, EducationDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly ICommentRepository _commentRepository;
+        public ContentController(IContentRepository contentRepository,IHttpContextAccessor httpContextAccessor, ICommentRepository commentRepository, ILikeRepository likeRepository)
         {
             _contentRepository = contentRepository;
-            _context = context;
             _contextAccessor = httpContextAccessor;
+            _commentRepository = commentRepository;
+            _likeRepository = likeRepository;
         }
 
   
@@ -33,65 +35,67 @@ namespace Education.WebApp.Controllers
 
 
         [HttpPost]
-        public bool AddLike(string CurUserId, int ContentId)      
-        {
-            
+        public async Task<int> AddLike(string CurUserId, int ContentId)      
+        {           
             try
             {
                 Like likes = new Like();
                 likes.UserId = CurUserId;
                 likes.ContentId = ContentId;
-                _context.Likes.AddAsync(likes);
-                _context.SaveChangesAsync();
-                return true;
+              await  _likeRepository.Add(likes);
+                return 1;
             }
             catch
             {
-                return false;
+                return 0;
             }
         }
 
         [HttpPost]
-        public bool RemoveLike(string CurUserId, int ContentId)
+        public async Task<int> RemoveLike(string CurUserId, int ContentId)
         {
-
             try
-            {
-                var getlike = _context.Likes.FirstOrDefault(x => x.UserId == CurUserId && x.ContentId == ContentId);
-                 _context.Likes.Remove(getlike);
-                _context.SaveChangesAsync();
-                return true;
+            {            
+              await  _likeRepository.Remove(CurUserId,ContentId);
+
+                return 1;
             }
             catch
             {
-                return false;
+                return 0;
             }
         }
         [HttpPost]
-        public bool AddComment(string message,int ContentId)
+        public async Task<IActionResult> AddComment(string message,int ContentId)
         {
-            var Id = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-          
-            try
-            {
+            var Id = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;       
                 Comment comment = new Comment()
                 {
                     UserId = Id,
                     ContentId = ContentId,
                     Message = message,
-                    DateCreated = DateTime.Now,
-                };
-                _context.AddAsync(comment);
-                _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+                    DateCreated = DateTime.UtcNow,
+                };               
+              await _commentRepository.Add(comment);
+                return Json(comment);
+            
            
         }
 
+        [HttpPost]
+        public async Task<int> DeleteComment(int CommentId)
+        {
+            try
+            {           
+                await _commentRepository.Delete(CommentId);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+
+        }
 
 
     }

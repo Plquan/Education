@@ -20,23 +20,25 @@ namespace Education.WebApp.Controllers
         }
 
         [HttpPost]
-        public bool Create(string name, string phone, string email, string message)
-        {
+        public async Task<int> Create(string name, string phone, string email, string message)
+        {            
             try
             {
-                Contact contact = new Contact();
-                contact.Name = name;
-                contact.PhoneNumber = phone;
-                contact.Email = email;
-                contact.Message = message;
-
-                _context.AddAsync(contact);
-                _context.SaveChangesAsync();
-                return true;
+                Contact contact = new Contact()
+                {
+                   Name = name,
+                   PhoneNumber = phone,
+                   Email = email,
+                   Message = message,
+                   DateCreated = DateTime.UtcNow,
+            };
+               await _context.Contacts.AddAsync(contact);
+               await _context.SaveChangesAsync();
+                return 1;
             }
             catch
             {
-                return false;
+                return 0;
             }
         }
     }

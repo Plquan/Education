@@ -10,8 +10,8 @@ namespace Education.Application.Interfaces
 {
     public interface IBookMarkRepository
     {
-        bool Add(BookMark bookMark);
-        bool Delete(BookMark bookMark);
+        Task<int> Add(BookMark bookMark);
+        Task<int> Remove(string CurUserId, int PlaylistId);
         Task<BookMarkVM> GetbyId(string UserID);
     }
 }
