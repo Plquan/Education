@@ -20,6 +20,11 @@ namespace Education.WebApp.Services
         }
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
         {
+            if (file == null || file.Length == 0)
+            {
+                // Handle invalid file
+                return null;
+            }
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
             {
@@ -39,11 +44,37 @@ namespace Education.WebApp.Services
             return uploadResult;
         }
 
-        public async Task<DeletionResult> DeletePhotoAsync(string publicUrl)
+        public async Task<DeletionResult> DeleteAsync(string publicUrl)
         {
             var publicId = publicUrl.Split('/').Last().Split('.')[0];
             var deleteParams = new DeletionParams(publicId);
             return await _cloundinary.DestroyAsync(deleteParams);
         }
-    }
+
+
+
+        public async Task<UploadResult> UploadVideoAsync(IFormFile videoFile)
+        {
+            if (videoFile == null || videoFile.Length == 0)
+            {
+                // Handle invalid file
+                return null;
+            }
+
+            // Tạo request để upload video
+            var uploadParams = new VideoUploadParams
+            {
+                File = new FileDescription(videoFile.FileName, videoFile.OpenReadStream()),
+                Transformation = new Transformation().Width(640).Height(480).Crop("fit"),
+                PublicId = Guid.NewGuid().ToString() // Tên duy nhất cho video trên Cloudinary
+            };
+
+            // Thực hiện upload video
+            var uploadResult = await _cloundinary.UploadAsync(uploadParams);
+
+            return uploadResult;
+        }
+       
+    
+}
 }

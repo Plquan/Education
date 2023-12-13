@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Controllers
 {
-  
+    
     public class ContactController : Controller
     {
         private readonly EducationDbContext _context;

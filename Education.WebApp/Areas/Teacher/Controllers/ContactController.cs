@@ -1,11 +1,13 @@
 ﻿using Education.Application.Interfaces;
 using Education.Data.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Education.WebApp.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
+    [Authorize(Roles = "Tutor")]
     public class ContactController : Controller
     {
         private readonly EducationDbContext _context;

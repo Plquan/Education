@@ -1,0 +1,72 @@
+﻿@using Education.ViewModel.Contents
+@model ContentDetail
+<section class="view-content">
+
+        <div class="container">
+            <video src="@Model.Video" controls poster="@Model.Thumb" class="video"></video>
+        <div class="date"><i class="fas fa-calendar"></i><span>@Model.DateCreated.ToString("dd/MM/yyyy")</span></div>
+            <h3 class="title">@Model.Title</h3>
+            <div class="flex">
+                <div><i class="fas fa-heart"></i><span>@Model.CountLike</span></div>
+                <div><i class="fas fa-comment"></i><span>@Model.Comments.Count</span></div>
+            </div>
+            <div class="description">@Model.Description</div>
+            <form action="" method="post">
+                <div class="flex-btn">
+                    <input type="hidden" name="video_id" value="<?= $video_id; ?>">
+                    <a href="" class="option-btn">update</a>
+                    <input type="submit" value="delete" class="delete-btn" onclick="return confirm('delete this video?');" name="delete_video">
+                </div>
+            </form>
+        </div>
+    
+
+</section>
+
+<section class="comments">
+
+   <h1 class="heading">user comments</h1>
+   <div class="show-comments">
+       @foreach(var item in Model.Comments){
+      <div class="box">
+         <div class="user">
+            <img src="@item.AppUser.Image" alt="">
+            <div>
+               <h3>@item.AppUser.UserName</h3>
+                <span>@item.DateCreated.ToString("dd/MM/yyyy")</span>
+            </div>
+         </div>
+         <p class="text">@item.Message</p>
+         <form action="" method="post" class="flex-btn">
+            <button type="button" data-action ="delete"  class="inline-delete-btn" >delete comment</button>
+         </form>
+      </div>
+    }
+      </div>
+   
+</section>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("body").on("click", ".box button[data-action='delete']", function () {
+                var clicked = $(this)
+                $.ajax({
+                    url: "/Teacher/Playlist/Remove",
+                    type: "POST",
+                    data: {
+                        PlaylistId: this.id
+                    },
+                    success: function (data) {
+                        clicked.closest('.box').hide("box");
+                    },
+                    error: function () {
+                        alert("falied to delete");
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}      

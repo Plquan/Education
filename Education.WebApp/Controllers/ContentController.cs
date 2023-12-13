@@ -29,7 +29,7 @@ namespace Education.WebApp.Controllers
         public async Task<IActionResult> Index(int ContentId)
         {
             var Id = _contextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            ContentVM ContentDetail = await _contentRepository.GetById(ContentId, Id);
+            ContentVM ContentDetail = await _contentRepository.getContentDetail(ContentId, Id);
             return View(ContentDetail);
         }
 
@@ -94,6 +94,17 @@ namespace Education.WebApp.Controllers
             {
                 return 0;
             }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateComment(int Id,string message)
+        {
+              var getc = await _commentRepository.GetCommentbyId(Id);
+                getc.Message = message;
+                getc.DateCreated = DateTime.UtcNow;
+                await _commentRepository.Update(getc);
+              return Json(getc);
+            
 
         }
 

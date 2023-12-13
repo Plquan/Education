@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Controllers
 {
-    [Authorize]
+    
     public class TutorController : Controller
     {
         private readonly ITutorRepository _repository;

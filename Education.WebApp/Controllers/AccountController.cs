@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Controllers
 {
-    
+ 
     public class AccountController : Controller
     {
         public readonly EducationDbContext _Context;
@@ -43,15 +43,9 @@ namespace Education.WebApp.Controllers
                     var result = await _signInManager.PasswordSignInAsync(User, loginVM.Password, false, false);
                     if (result.Succeeded)
                     { 
-                        if (await _userManager.IsInRoleAsync(User, "Student"))
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
-                        else
-                        {
-                            TempData["Error"] = "Tài khoản không tồn tại";
-                            return View();
-                        }
+                        
+                            return RedirectToAction("Index", "Home");                      
+                      
                                             
                     }
                     TempData["Error"] = "Wrong credentials. Please try again";

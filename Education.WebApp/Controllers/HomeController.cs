@@ -13,7 +13,7 @@ using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
-
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -33,7 +33,8 @@ namespace Education.WebApp.Controllers
         }
 
         public async Task <IActionResult> Index()
-        {
+        {        
+
             if (_signInManager.IsSignedIn(User))
             {   //session
                 //var Id = _httpContextAccessor.HttpContext?.Session.GetString("UserId");

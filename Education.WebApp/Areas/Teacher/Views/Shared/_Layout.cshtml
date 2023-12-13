@@ -54,16 +54,16 @@
                 {
                     <img src="@CurrentUser.Image" alt="">
                     <h3>@CurrentUser.UserName</h3>
-                    <span>student</span>
+                    <span>tutor</span>
                     <a asp-action="Index" asp-controller="Profile"  class="btn">view profile</a>
-                    <a href="/Account/Register" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
+                    <a href="/Account/Logout" class="delete-btn">logout</a>
                 }
                 else
                 {
                     <h3>please login or register</h3>
                     <div class="flex-btn">
-                        <a asp-controller="Account" asp-action="Login" class="option-btn">login</a>
-                        <a asp-controller="Account" asp-action="Register" class="option-btn">register</a>
+                        <a href="/Account/Login" class="option-btn">login</a>
+                        <a href="/Account/Register" class="option-btn">register</a>
                     </div>
                 }
 
@@ -87,7 +87,6 @@
             {
                 <img src="@CurrentUser.Image" alt="">
                 <h3>@CurrentUser.UserName</h3>
-                <span>student</span>
                 <a asp-action="GetUserDetail" asp-controller="Home" asp-route-Id="@CurrentUser.Id" class="btn">view profile</a>
             }
             else
@@ -101,7 +100,7 @@
             <a href="@Url.Action("Index","Playlist")"><i class="fa-solid fa-bars-staggered"></i><span>playlists</span></a>
             <a href="@Url.Action("Index","Comment")"><i class="fas fa-comment"></i><span>comments</span></a>
             <a href="@Url.Action("Index","Contact")"><i class="fa-solid fa-bell"></i><span>notice</span></a>
-            <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i class="fas fa-right-from-bracket"></i><span>logout</span></a>
+            <a href="/Home/Index" ><i class="fas fa-right-from-bracket"></i><span>logout</span></a>
         </nav>
 
    

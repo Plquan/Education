@@ -1,5 +1,6 @@
 ﻿using Education.Data.Entities;
 using Education.ViewModel;
+using Education.ViewModel.Contents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace Education.Application.Interfaces
 {
     public interface IContentRepository
     {
-        bool Add(Content content);
-        bool Update(Content content);
-        bool Delete(Content content);
-        Task<ContentVM> GetById(int ContentId, string userId);
+        Task<int> Add(Content content);
+        Task<int> Update(Content content);
+        Task<int> Delete(Content content);
+        Task<Content> GetById(int id);
+        Task<ContentVM> getContentDetail(int ContentId, string userId);
+        Task<ContentDetail> ShowContentDetail(int ContentId);
         Task<List<Content>> GetAll();
         Task<PlaylistDetailVM> GetAllByPlaylist(int playlistId);
 

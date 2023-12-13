@@ -1,0 +1,27 @@
+﻿@using Education.ViewModel.Contents
+@model CreateContentVM
+<section class="video-form">
+    <h1 class="heading">upload content</h1>
+
+    <form method="post" asp-action="AddContent" enctype="multipart/form-data">
+        <input type="hidden" asp-for="@Model.PlaylistId"/>
+        <p>video status <span>*</span></p>
+        <select asp-for="Status" class="box" required>
+            <option selected disabled>-- select status</option>
+            <option value="Active">active</option>
+            <option value="InActive">deactive</option>
+        </select>
+
+        <p>video title<span>*</span></p>
+        <input type="text" asp-for="Title" maxlength="100" required placeholder="enter video title" class="box">
+        <p>video description <span>*</span></p>
+        <textarea asp-for="Description" class="box" required placeholder="write description" maxlength="1000" cols="30" rows="10"></textarea>
+        <p>select thumbnail <span>*</span></p>
+        <input type="file" asp-for="Thumb" accept="image/*" required class="box">
+        <p>select video <span>*</span></p>
+        <input type="file" asp-for="Video" accept="video/*" required class="box">
+        <input type="submit" value="upload video" name="submit" class="btn">
+    </form>
+
+</section>
+

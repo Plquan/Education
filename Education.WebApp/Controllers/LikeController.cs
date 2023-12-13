@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
-    [Authorize]
+
     public class LikeController : Controller
     {
         private readonly ILikeRepository _likeRepository;

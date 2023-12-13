@@ -1,1 +1,34 @@
-﻿
+﻿@using Education.ViewModel
+@model UpdateProfileVM
+
+<!-- register section starts  -->
+
+<section class="form-container" style="min-height: calc(100vh - 19rem);">
+
+    <form class="register" action="" method="post" enctype="multipart/form-data">
+        <h3>update profile</h3>
+        <div class="flex">
+            <div class="col">
+                <p>your name </p>
+                <input type="text" asp-for="Name" required placeholder="enter your new name"  maxlength="010" class="box">      
+                <p>your email </p>
+                <input type="email" asp-for="email" placeholder="enter your new email" maxlength="20" class="box">
+            </div>
+            <div class="col">
+                <p>old password :</p>
+                <input type="password" asp-for="OldPassword" placeholder="enter your old password" maxlength="20" class="box">
+                <p>new password :</p>
+                <input type="password" asp-for="NewPassword" placeholder="enter your new password" maxlength="20" class="box">
+                
+            </div>
+        </div>
+        <p>confirm password :</p>
+        <input type="password" asp-for="ConfirmPassWord" placeholder="confirm your new password" maxlength="20" class="box">
+        <p>update avatar</p>
+        <input type="file" asp-for="Image" class="box">
+        <input type="submit" name="submit" value="update now" class="btn">
+    </form>
+
+</section>
+
+<!-- registe section ends -->

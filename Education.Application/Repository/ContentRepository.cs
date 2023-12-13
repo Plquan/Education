@@ -2,7 +2,7 @@
 using Education.Data.EF;
 using Education.Data.Entities;
 using Education.ViewModel;
-
+using Education.ViewModel.Contents;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,16 +26,16 @@ namespace Education.Application.Repository
             _userManager = userManager;
 
         }
-        public bool Add(Content content)
+        public  Task<int> Add(Content content)
         {
-            _context.Add(content);
-            return _context.SaveChanges() > 0;
+             _context.Add(content);
+            return _context.SaveChangesAsync();
         }
 
-        public bool Delete(Content content)
+        public Task<int> Delete(Content content)
         {
              _context.Remove(content);
-            return _context.SaveChanges() > 0;
+            return _context.SaveChangesAsync();
         }
 
         public async Task<List<Content>> GetAll()
@@ -61,16 +61,23 @@ namespace Education.Application.Repository
             return DetailPlaylist;
         }
 
-        public async Task<ContentVM> GetById(int ContentId,string CuruserId)
+        public async Task<Content> GetById(int id)
         {
+           var getc = await _context.Contents.FirstOrDefaultAsync(x => x.Id == id);
+            return getc;
+        }
+
+        public async Task<ContentVM> getContentDetail(int ContentId,string CuruserId)
+        {
+          
             var content = await _context.Contents.Include(x => x.Playlist).ThenInclude(x => x.AppUser)
                                 .FirstOrDefaultAsync(x => x.Id == ContentId);       
             var LikeCount = await _context.Likes.Where(x => x.ContentId == ContentId).CountAsync();       
             var like = await _context.Likes.Where(i => i.ContentId == ContentId).ToListAsync();
             
             var Liked = await _context.Likes.CountAsync(x => x.UserId == CuruserId && x.ContentId == ContentId);
-            var ListComment = await _context.Comments.Where(x => x.ContentId == ContentId).ToListAsync();
-
+            var ListComment = await _context.Comments.Where(x => x.ContentId == ContentId).Include(x => x.AppUser).ToListAsync();
+              
             var DetailContent = new ContentVM()
             {
                 Id = ContentId,
@@ -82,16 +89,41 @@ namespace Education.Application.Repository
                 DateCreated = content.DateCreated,
                 AppUser = content.Playlist.AppUser,            
                 Likes = like,
-                Comments = ListComment,
-                UserLiked = Liked
+                Comments = ListComment,               
+                UserLike = Liked
+               
             };
             return DetailContent;
         }
 
-        public bool Update(Content content)
+        public async Task<ContentDetail> ShowContentDetail(int ContentId)
+        {
+            var content = await _context.Contents.Include(x => x.Playlist).ThenInclude(x => x.AppUser)
+                                 .FirstOrDefaultAsync(x => x.Id == ContentId);
+            var LikeCount = await _context.Likes.Where(x => x.ContentId == ContentId).CountAsync();
+       
+            var ListComment = await _context.Comments.Where(x => x.ContentId == ContentId).Include(x => x.AppUser).ToListAsync();
+
+            var DetailContent = new ContentDetail()
+            {
+                Id = ContentId,
+                PlaylistId = content.PlaylistId,
+                Title = content.Title,
+                Description = content.Description,
+                Video = content.Video,
+                Thumb = content.Thumb,
+                DateCreated = content.DateCreated,
+                AppUser = content.Playlist.AppUser,
+                CountLike = LikeCount,
+                Comments = ListComment,             
+            };
+            return DetailContent;
+        }
+
+        public Task<int> Update(Content content)
         {
             _context.Update(content);
-            return _context.SaveChanges() > 0;
+            return _context.SaveChangesAsync() ;
         }
     }
 }

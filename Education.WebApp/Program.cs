@@ -1,4 +1,4 @@
-using Education.Application.Interfaces;
+﻿using Education.Application.Interfaces;
 using Education.Application.Repository;
 using Education.Data.EF;
 using Education.Data.Entities;
@@ -30,6 +30,11 @@ builder.Services.AddDbContext<EducationDbContext>(options =>
 
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<EducationDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options => {
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/Login";
+});
 
 
 

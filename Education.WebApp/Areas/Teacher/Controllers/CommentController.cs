@@ -1,5 +1,6 @@
 ﻿using Education.Application.Interfaces;
 using Education.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 namespace Education.WebApp.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
+    [Authorize(Roles = "Tutor")]
     public class CommentController : Controller
     {
        private readonly ICommentRepository _commentRepository;

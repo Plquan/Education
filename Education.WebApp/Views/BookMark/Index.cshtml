@@ -3,9 +3,12 @@
 
 
 <section class="courses">
-
     <h1 class="heading">bookmarked playlists</h1>
-
+    @if (Model.Playlists.Count == 0)
+    {
+        <p class="empty">no playlist saved yet!</p>
+    }
+    else{
     <div class="box-container">
       @foreach(var item in Model.Playlists){
         <div class="box">
@@ -23,5 +26,6 @@
         }
  
     </div>
+    }
 
 </section>

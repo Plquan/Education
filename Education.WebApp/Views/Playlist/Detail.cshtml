@@ -20,12 +20,23 @@
       <div class="col">
 
             <form action="" method="post" class="save-list">
-          @if(@Model.IsBookMark == 1){
-            <button type="button" id="saved"><i class="fas fa-bookmark"></i><span>saved</span></button>
-          }
-          else{
-               <button type="button" id="save" ><i class="far fa-bookmark"></i><span>save playlist</span></button>
-          }
+                @{
+                    string savep;
+                    string icon;
+                    @if (@Model.IsBookMark == 1)
+                    {
+                        icon = "fa-solid fa-bookmark";
+                        savep = "saved";
+                    }
+                    else
+                    {
+                        icon = "fa-regular fa-bookmark";
+                        savep = "save playlist";
+                    }
+                }
+       
+               <button type="button" id="save" ><i id="BookMark" class="@icon"></i><span>@savep</span></button>
+          
             </form> 
 
          <div class="thumb">
@@ -80,49 +91,49 @@
 </section>
 @section Scripts {
     <script>
-        // add like
+        // save playlist
         $(document).ready(function () {
 
             $("#save").click(function () {
-                $.ajax({
-                    url: "/Playlist/AddBookMark",
-                    type: "POST",
-                    data: {
-                        CurUserId: "@CurrentUser.Id",
-                        PlaylistId: @Model.Id
-                                    },
-                    success: function (data) {
-                        window.location.reload();
-                    },
-                    error: function (error) {
-                        console.error("false");
-                    }
+                if ($("#save span").text() == "save playlist"){
+                    $.ajax({
+                        url: "/Playlist/AddBookMark",
+                        type: "POST",
+                        data: {
+                            CurUserId: "@CurrentUser.Id",
+                            PlaylistId: @Model.Id
+                               },
+                        success: function (data) {
+                            $("#save span").text("saved");
+                            $("#BookMark").removeClass("fa-regular fa-bookmark").addClass("fa-solid fa-bookmark");
+                        },
+                        error: function (error) {
+                            console.error("false");
+                        }
 
-                });
+                    });
+                }
+                else {
+                    $.ajax({
+                        url: "/Playlist/RemoveBookMark",
+                        type: "POST",
+                        data: {
+                            CurUserId: "@CurrentUser.Id",
+                            PlaylistId: @Model.Id
+                                                    },
+                        success: function (data) {
+                            $("#BookMark").removeClass("fa-solid fa-bookmark").addClass("fa-regular fa-bookmark");
+                            $("#save span").text("save playlist");
+                        },
+                        error: function (error) {
+                            console.error("false");
+                        }
+
+                    });
+                }
+
             });
         });
     </script>
 
-    <script>
-        // add like
-        $(document).ready(function () {
-            $("#saved").click(function () {
-                $.ajax({
-                    url: "/Playlist/RemoveBookMark",
-                    type: "POST",
-                    data: {
-                        CurUserId: "@CurrentUser.Id",
-                        PlaylistId: @Model.Id
-                                            },
-                    success: function (data) {
-                        window.location.reload();
-                    },
-                    error: function (error) {
-                        console.error("false");
-                    }
-
-                });
-            });
-        });
-    </script>
     }

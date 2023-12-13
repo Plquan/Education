@@ -2,9 +2,11 @@
 using Education.Data.EF;
 using Education.Data.Entities;
 using Education.ViewModel;
+using Education.ViewModel.Contents;
 using Education.ViewModel.PlaylistViewModel;
 using Education.WebApp.Models;
 using Education.WebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -12,32 +14,42 @@ using System.Security.Claims;
 namespace Education.WebApp.Areas.Teacher.Controllers
 {
     [Area("Teacher")]
+    [Authorize(Roles = "Tutor")]
     public class PlaylistController : Controller
     {       
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IPlaylistRepository _playlistRepository;
         private readonly IPhotoService _photoservice;
-        public PlaylistController(IHttpContextAccessor httpContextAccessor, IPlaylistRepository playlistRepository, IPhotoService photoservice)
+        private readonly IContentRepository _contentRepository;
+        public PlaylistController(IHttpContextAccessor httpContextAccessor, IPlaylistRepository playlistRepository, IPhotoService photoservice, IContentRepository contentRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _playlistRepository = playlistRepository;
             _photoservice = photoservice;
+            _contentRepository = contentRepository;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
-        {
+        { 
             var Id = _httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             List<Playlist> getp = await _playlistRepository.GetbyUserId(Id);
 
             return View(getp);
         }
-        
-        public async Task<IActionResult> Remove(int Id)
+        [HttpPost]
+        public async Task<int> Remove(int PlaylistId)
         {
-            await _playlistRepository.Delete(Id);
+            try
+            {
+                await _playlistRepository.Delete(PlaylistId);
+                return 1;
+            }
+            catch
+            {
+               return 0;
+            }
            
-            return RedirectToAction("Index");
         }
         public IActionResult Create()
         {
@@ -94,7 +106,7 @@ namespace Education.WebApp.Areas.Teacher.Controllers
             var getp = await _playlistRepository.GetbyId(playlistvm.Id);
             if (playlistvm.Thumb != null)
             {
-                await _photoservice.DeletePhotoAsync(getp.Thumb);
+                await _photoservice.DeleteAsync(getp.Thumb);
                 var result = await _photoservice.AddPhotoAsync(playlistvm.Thumb);
                 getp.Title = playlistvm.Title;
                 getp.Description = playlistvm.Description;
@@ -115,13 +127,63 @@ namespace Education.WebApp.Areas.Teacher.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+
         public async Task<IActionResult> Detail(int Id)
         {
             PlaylistDetailVM list = await _playlistRepository.getDetail(Id);
             return View(list);
         }
+     
+        public IActionResult AddContent()
+        {          
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddContent(int Id,CreateContentVM createContentVM)
+        {
+           
+            var result1 = await _photoservice.AddPhotoAsync(createContentVM.Thumb);
+            var result2 = await _photoservice.UploadVideoAsync(createContentVM.Video);
+            var addnewc = new Content()
+            {
+                Title = createContentVM.Title,
+                PlaylistId = Id,
+                Description = createContentVM.Description,
+                Status = createContentVM.Status,
+                Thumb = result1.Url.ToString(),
+                Video = result2.Url.ToString(),
+                DateCreated = DateTime.UtcNow
+            };
+            await _contentRepository.Add(addnewc);
+            return Redirect("/Teacher/Playlist/Detail/" + Id + "/");
+        }
 
-       
+        [HttpGet]
+        public async Task<IActionResult> EditContent(int Id)
+        {
+            var getc = await _contentRepository.GetById(Id);
+            return View(getc);
+        }
+        //[HttpPost]
+        //public async Task<IActionResult> EditContent(EditContentVM editContentVM)
+        //{
+        //    var getc = await _contentRepository.GetById(editContentVM.Id);
+
+        //    if (editContentVM.Video != null)
+        //    {
+        //        await _photoservice.DeleteAsync(getc.Video);
+        //    }
+
+
+        //    return Redirect("/Teacher/Playlist/Detail/" +  + "/");
+        //}
+
+        public async Task<IActionResult> ContentDetail(int Id)
+        {
+            ContentDetail getc = await _contentRepository.ShowContentDetail(Id);
+            return View(getc);
+        }
+    
+        
     }
 }

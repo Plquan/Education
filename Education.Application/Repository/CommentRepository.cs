@@ -62,20 +62,19 @@ namespace Education.Application.Repository
 
         }
 
+       
+
         public async Task<Comment> GetCommentbyId(int CommentId)
         {
             var getc = await  _context.Comments.FirstOrDefaultAsync(x => x.Id == CommentId);
             return getc;             
         }
 
-       
+     
 
-     public async  Task<int> Update(Comment comments)
+        public async  Task<int> Update(Comment comments)
         {
-           var getcm = await _context.Comments.FirstOrDefaultAsync(x => x.Id == comments.Id);          
-                getcm.Message = comments.Message;
-                getcm.DateCreated = DateTime.UtcNow;
-               
+               _context.Update(comments);      
             return await _context.SaveChangesAsync();
         }
     }

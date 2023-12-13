@@ -7,20 +7,8 @@
 @{
     var CurrentUser = await UserManager.GetUserAsync(User);
 }
-    <!-- watch video section starts  -->
-<section class="edit-comment" >
-    <h1 class="heading" >edit comment</h1>
-    <form action="" method="post" id="form" style="display:none">
-        <input type="hidden" name="update_id" id="commentid">
-        <textarea id="EditMessage" class="box" maxlength="1000" required placeholder="please enter your comment" cols="30" rows="10"></textarea>
-        <div class="flex">
-            <a id="cancel" class="inline-option-btn">cancel edit</a>
-            <input type="button" id="updateComment" value="update now" name="update_now" class="inline-btn">
-        </div>
-    </form>
-</section>
 
-
+<!-- watch video section starts  -->
 
 <section class="watch-video" >
 
@@ -29,7 +17,7 @@
             <h3 class="title">@Model.Title</h3>
             <div class="info">
                 <p><i class="fas fa-calendar"></i><span>@Model.DateCreated.ToString("dd-MM-yyyy")</span></p>
-            <p><i class="fas fa-heart" id="likeCount"></i><span>@Model.Likes.Count</span></p>
+            <p><i class="fas fa-heart"></i><span id="likeCount">@Model.Likes.Count</span></p>
             </div>
             <div class="tutor">
                 <img src="@Model.AppUser.Image" alt="">
@@ -40,36 +28,54 @@
             </div>
         <form action="" method="post" class="flex" id="likeContainer">
                 <a asp-action="Detail" asp-controller ="Playlist" asp-route-Id ="@Model.PlaylistId" class="inline-btn">view playlist</a>
-                        
-                @if (Model.UserLiked == 1)
+
+            @{
+                string likeheart;
+                string likep;
+                if(Model.UserLike == 1)
                 {
-                <button type="button" id="likedButton"><i class="fas fa-heart"></i><span>liked</span></button>
+                    likep = "liked";
+                    likeheart = "fa-solid fa-heart";
                 }
                 else
                 {
-                <button type="button" id="likeButton"><i class="far fa-heart"></i><span>like</span></button>
+                    likep = "like";
+                    likeheart = "fa-regular fa-heart";
                 }
-             
-            </form> 
+            }
+
+            <button type="button" id="likeButton"><i id="heart" class="@likeheart"></i><span>@likep</span></button>
+        </form> 
             <div class="description"><p>@Model.Description</p></div> 
         </div>
              
     </section>
+<!-- edit section  section starts  -->
+<section class="edit-comment" id="form" style="display:none">
+    <h1 class="heading">edit comment</h1>
+    <form action="" method="post" >
+        <input type="hidden" name="update_id" id="commentId">
+        <textarea id="editMessage" class="box" maxlength="1000" required placeholder="please enter your comment" cols="30" rows="10"></textarea>
+        <div class="flex">
+            <a id="cancel" class="inline-option-btn">cancel edit</a>
+            <button type="button" id="updateComment" class="inline-btn">update now</button>
+        </div>
+    </form>
+</section>
+<!-- edit section  section ends  -->
 
-    <!-- watch video section ends -->  
+    <!-- watch video section start -->  
 <section class="comments" id="commentContainer">
 
     <h1 class="heading">add a comment</h1>
 
     <form action="" method="post" class="add-comment">
         <textarea id="c_message"  required placeholder="write your comment..." maxlength="300" cols="30" rows="10"></textarea>
-        <button type="button"  id="addComment" class="inline-btn">add comment</button>
+        <button type="button"  id="addComment"  class="inline-btn">add comment</button>
     </form>
 
     <h1 id ="UserComment" class="heading">user comments</h1>
-
-    <div class="show-comments" id="divComment">
-    
+    <div class="show-comments" id="divComment"> 
         @foreach (var item in Model.Comments)
         {
                   <div class="box" >
@@ -84,7 +90,7 @@
                 @if (item.UserId == CurrentUser.Id)
                 {              
                     <form action="" method="post" class="flex-btn">
-                      <button type="button" data-message="@item.Message" data-id="@item.Id" data-action="edit" class="inline-option-btn">edit comment</button>
+                      <button type="button" data-message="@item.Message"  data-id="@item.Id" data-action="edit" class="inline-option-btn">edit comment</button>
                         <button type="button" id="@item.Id" data-action="delete" class="inline-delete-btn">delete comment</button>
                     </form>
                 }
@@ -93,47 +99,86 @@
     </div>
 
 </section>
-<!-- comments section starts  -->
+<!-- comments section ends  -->
 
 @section Scripts {
 
 
-    <script>//cancel edit
-        $(document).ready(function () {
+    
 
-            $("#cancel").click(function () {               
-                $("#form").hide("box");
-                $('html, body').animate({
-                    scrollTop: $("#UserComment").offset().top
-                },1000);
+     <script> // show form edit comment
+        $(document).ready(function () {
+            $("body").on("click", ".box button[data-action='edit']", function () {
+                var clicked = $(this);
+                var message = $(this).data("message");
+                var id = $(this).data("id");
+                $("#editMessage").val(message);
+                $("#commentId").val(id);
+         //hiện form
+                $("#commentContainer").hide("box");
+                $("#form").show("box");              
+                $(this).closest('.box').hide("box");
+
+                $("#cancel").click(function () {    //cancel edit
+                    $("#form").hide("box");
+                    $("#commentContainer").show("box");
+                    clicked.closest('.box').show("box");
+                    $('html, body').scrollTop("#form".top);
+
+                });
+
+            });
+        });
+    </script>
+
+    <script> //update comment      
+        $(document).ready(function () {
+            $("#updateComment").click(function () {
+                var CommentId = document.getElementById("commentId").value;
+                $.ajax({
+                    url: "/Content/UpdateComment",
+                    type: "POST",
+                    data: {
+                        Id: CommentId,
+                        message: $("#editMessage").val()
+                     },
+                    success: function (data) {
+                        $("#commentContainer").show("box");
+                        $("#form").hide("box");
+                            // Đẩy comment mới update vào.
+                        var date = moment(data.dateCreated).format("DD-MM-YYYY");
+                        html = '<div class="box">' +
+                            '<div class="user">' +
+                            ' <img src="@CurrentUser.Image" alt="">' +
+                            '<div>' +
+                            ' <h3>@CurrentUser.UserName</h3>' +
+                            '<span>' + date + '</span>' +
+                            ' </div>' +
+                            '</div>' +
+                            ' <p class="text">' + data.message + '</p>' +
+                            '<form action="" method="post" class="flex-btn">' +
+                            '<button type="button" data-message="' + data.message + '" data-id="' + data.id + '" data-action="edit" class="inline-option-btn">edit comment</button>' +
+                            '<button type="button" id="' + data.id + '" data-action="delete" class="inline-delete-btn" >delete comment</button>' +
+                            '</form>' +
+                            '</div>'
+
+                        $("#divComment").append(html);
+                        $('html, body').animate({ scrollTop: $(document).height() }, 1000);
+                    },
+                    error: function (error) {
+                        alert("error");
+                    }
+
+                });
             });
 
         });
 
     </script>
 
-     <script> // show form edit comment
-        $(document).ready(function () {
-            $("body").on("click", ".box button[data-action='edit']", function () {
-                $("#form").show();
-                $('html, body').animate({ 
-                    scrollTop: 0            
-                });
-                var message = $(this).data("message");
-                var id = $(this).data("id");
-                $("#EditMessage").val(message);
-                $("#commentid").val(id);       
-            });
-
-        });
-    </script> 
-    
-
-
 
     <script> // add comment
         $(document).ready(function () {
-
             $("#addComment").click(function () {
                 $.ajax({
                     url: "/Content/AddComment",
@@ -155,7 +200,7 @@
                             '</div>' +
                             ' <p class="text">' + data.message + '</p>' +
                             '<form action="" method="post" class="flex-btn">' +
-                            '<button type="button" data-message="'+ data.message +'" data-md="'+ data.id +'" data-action="edit" class="inline-option-btn">edit comment</button>' +
+                            '<button type="button" data-message="'+ data.message +'" data-id="'+ data.id +'" data-action="edit" class="inline-option-btn">edit comment</button>' +
                             '<button type="button" id="'+ data.id+'" data-action="delete" class="inline-delete-btn" >delete comment</button>' +
                             '</form>' +
                             '</div>'
@@ -163,7 +208,7 @@
                         $("#divComment").append(html);
                     },
                     error: function (error) {
-                        alert("error");
+                        alert("Không để trống");
                     }
 
                 });
@@ -202,23 +247,48 @@
         $(document).ready(function () {
 
             $("#likeButton").click(function () {
-                $("#likeButton").remove();
-                $("#likedButton").show();
-                $.ajax({
-                    url: "/Content/AddLike",
-                    type: "POST",
-                    data: {
-                        CurUserId: "@CurrentUser.Id",
-                        ContentId: @Model.Id
+                var CurLikeCount = parseInt($("#likeCount").text());
+                if ($("#likeButton span").text() == "like") {
+                    $.ajax({
+                        url: "/Content/AddLike",
+                        type: "POST",
+                        data: {
+                            CurUserId: "@CurrentUser.Id",
+                            ContentId: @Model.Id
                        },
-                    success: function (data) {
-                        window.location.reload();                    
-                    },
-                    error: function (error) {
-                        console.error("false");
-                    }
+                        success: function (data) {
+                            var newLikeCount = CurLikeCount + 1;
+                            $("#heart").removeClass("fa-regular fa-heart").addClass("fa-solid fa-heart");
+                            $("#likeCount").text(newLikeCount);                    
+                            $("#likeButton span").text("liked");
+                        },
+                        error: function (error) {
+                            console.error("false");
+                        }
 
-                });
+                    });
+                }
+                else {
+                   
+                    $.ajax({
+                        url: "/Content/RemoveLike",
+                        type: "POST",
+                        data: {
+                            CurUserId: "@CurrentUser.Id",
+                            ContentId: @Model.Id
+                           },
+                        success: function (data) {
+                            var newLikeCount = CurLikeCount - 1;
+                            $("#heart").removeClass("fa-solid fa-heart").addClass("fa-regular fa-heart");
+                            $("#likeCount").text(newLikeCount);
+                            $("#likeButton span").text("like");
+                        },
+                        error: function (error) {
+                            console.error("false");
+                        }
+
+                    });
+                }
             });
         });
     </script>
@@ -226,23 +296,8 @@
 
     <script> //remove like
         $(document).ready(function () {
-
             $("#likedButton").click(function () {
-                $.ajax({
-                    url: "/Content/RemoveLike",
-                    type: "POST",
-                    data: {
-                        CurUserId: "@CurrentUser.Id",
-                        ContentId: @Model.Id
-                       },
-                    success: function (data) {
-                        window.location.reload();
-                    },
-                    error: function (error) {
-                        console.error("false");
-                    }
-
-                });
+                
             });
         });
     </script>

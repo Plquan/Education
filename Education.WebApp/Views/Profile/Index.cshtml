@@ -1,4 +1,5 @@
-﻿
+﻿@using Education.Data.Entities
+@model AppUser
 
 <section class="profile">
 
@@ -7,10 +8,10 @@
     <div class="details">
 
         <div class="user">
-            <img src="uploaded_files/<?= $fetch_profile['image']; ?>" alt="">
-            <h3><?= $fetch_profile['name']; ?></h3>
-            <p>student</p>
-            <a href="update.php" class="inline-btn">update profile</a>
+            <img src="@Model.Image" alt="">
+            <h3>@Model.UserName</h3>
+            <p></p>
+            <a asp-action="Update"  class="inline-btn">update profile</a>
         </div>
 
         <div class="box-container">
@@ -23,7 +24,7 @@
                         <span>saved playlists</span>
                     </div>
                 </div>
-                <a href="#" class="inline-btn">view playlists</a>
+                <a href="/BookMark/Index" class="inline-btn">view playlists</a>
             </div>
 
             <div class="box">
@@ -34,7 +35,7 @@
                         <span>liked tutorials</span>
                     </div>
                 </div>
-                <a href="#" class="inline-btn">view liked</a>
+                <a href="/Like/Index" class="inline-btn">view liked</a>
             </div>
 
             <div class="box">
@@ -45,7 +46,7 @@
                         <span>video comments</span>
                     </div>
                 </div>
-                <a href="#" class="inline-btn">view comments</a>
+                <a href="/Comment/Index" class="inline-btn">view comments</a>
             </div>
 
         </div>

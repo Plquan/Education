@@ -1,9 +1,15 @@
 ﻿@using Education.ViewModel
 @model List<UserCommentVM>
 
-<section class="comments">
 
-   <h1 class="heading">your comments</h1> 
+
+<section class="comments">
+   <h1 class="heading">your comments</h1>
+    @if (Model.Count == 0)
+    {
+        <p class="empty">no comments added yet!</p>
+    }
+    else{
    <div class="show-comments">
      @foreach(var item in Model){
       <div class="box" style="">
@@ -12,13 +18,13 @@
           
          <form action="" method="post" class="flex-btn">
                     <a class="inline-option-btn" asp-action="Edit" asp-controller="Comment" asp-route-Id="@item.Comment.Id">edit comment</a>
-                    <a class="inline-delete-btn" href="@Url.Action("Delete","Comment",new {Id = item.Comment.Id})" onclick="return confirm('delete this comment?');">delete comment</a>
+                    <a class="inline-delete-btn" href="@Url.Action("Delete","Comment",new {Id = item.Comment.Id})">delete comment</a>
          </form>
          
       </div>
       }
       </div>
-   
+   }
 </section>
 
 <!-- comments section ends -->
