@@ -15,7 +15,19 @@ namespace Education.WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var getall = await _context.Contacts.ToListAsync();
+            if (TempData["result"] != null)
+            {
+                ViewBag.message = TempData["result"];
+            }
             return View(getall);
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var query = await _context.Contacts.FirstOrDefaultAsync(x => x.Id == id);
+            _context.Contacts.Remove(query);
+            _context.SaveChanges();
+            TempData["result"] = "delete message successful";
+            return RedirectToAction("Index");
         }
     }
 }

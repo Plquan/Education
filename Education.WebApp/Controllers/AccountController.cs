@@ -28,6 +28,7 @@ namespace Education.WebApp.Controllers
         }
         public IActionResult Login()
         {
+
             return View();
         }
 
@@ -35,15 +36,14 @@ namespace Education.WebApp.Controllers
         public async Task<IActionResult> Login(LoginVM loginVM)
         {
             var User = await _userManager.FindByEmailAsync(loginVM.Email);
+            if (User.Status == Data.Enum.Status.InActive)
+            {
+                ViewBag.result = "your account was locked";
+                return View();
+            }
             if (User != null)
             {
-                if (User.Status == Data.Enum.Status.InActive)
-                {
-                    return View();
-                }
-                else
-                {
-                    var checkpass = await _userManager.CheckPasswordAsync(User, loginVM.Password);
+                  var checkpass = await _userManager.CheckPasswordAsync(User, loginVM.Password);
                     if (checkpass)
                     {
 
@@ -63,7 +63,7 @@ namespace Education.WebApp.Controllers
                         ViewBag.password = "Wrong Password!";
                         return View(loginVM);
                     }
-                }
+             
             }
             ViewBag.account = "Account do not exists";
             return View(loginVM);
@@ -78,6 +78,10 @@ namespace Education.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(registerVM);
+            }
             var checkemail = await _userManager.FindByEmailAsync(registerVM.Email);
 
             if (checkemail != null)
@@ -85,13 +89,13 @@ namespace Education.WebApp.Controllers
                 TempData["Error"] = "This email address is already in use";
                 return View(registerVM);
             }
-
+            var result = await _photoservice.AddPhotoAsync(registerVM.Image);
             var User = new AppUser()
             {
                 UserName = registerVM.Name,
                 Email = registerVM.Email,
-                Image = "/images/" + registerVM.Image,     
-            };
+                Image = result.Url.ToString(),                        
+           };
               var NewUser = await _userManager.CreateAsync(User,registerVM.Password);
             if (NewUser.Succeeded)
             {

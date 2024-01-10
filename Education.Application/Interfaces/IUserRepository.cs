@@ -19,7 +19,6 @@ namespace Education.Application.Interfaces
         Task<List<UserDetailVM>> GetAll();
         Task<EditUserVM> getbyId(string id);
         Task<PagedResult<UserDetailVM>> GetAllUserPaging(int PageIndex,int PageSize);
-        Task<PagedResult<UserDetailVM>> GetAllTeacherPaging(int PageIndex, int PageSize);
         Task<EditAdminVM> getDetailAdmin(string id);
     }
 }

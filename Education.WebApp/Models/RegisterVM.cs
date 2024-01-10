@@ -18,6 +18,6 @@ namespace Education.WebApp.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password do not match")]
         public string ConfirmPassword { get; set; }
-        public string Image { get; set;}
+        public IFormFile Image { get; set;}
     }
 }

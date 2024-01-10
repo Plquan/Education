@@ -46,7 +46,7 @@
                 <h3 class="title">@item.Title</h3>
                 <form action="" method="post" class="flex-btn">
                     <a asp-action="EditContent" asp-controller="Tplaylist" asp-route-Id ="@item.Id" class="option-btn">update</a>
-                    <button type="button" id="@item.Id" data-action="delete" class="delete-btn" onclick="return confirm('delete this video?');" name="delete_video">delete</button>
+                    <button type="button" id="@item.Id" data-action="delete" class="delete-btn">delete</button>
                 </form>
                 <a asp-action ="ContentDetail" asp-route-Id = "@item.Id" class="btn">watch video</a>
             </div>
@@ -54,3 +54,28 @@
 
     </div>
 </section>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("body").on("click", ".box button[data-action='delete']", function () {
+                var clicked = $(this)
+                $.ajax({
+                    url: "/TPlaylist/DeleteContent",
+                    type: "POST",
+                    data: {
+                        Id: this.id
+                    },
+                    success: function (data) {
+                        clicked.closest('.box').hide("box");
+                    },
+                    error: function () {
+                        alert("falied to delete");
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}      

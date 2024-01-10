@@ -13,7 +13,7 @@ namespace Education.Application.Interfaces
     {
         Task<int> Add(Content content);
         Task<int> Update(Content content);
-        Task<int> Delete(Content content);
+        Task<int> Delete(int Id);
         Task<Content> GetById(int id);
         Task<ContentVM> getContentDetail(int ContentId, string userId);
         Task<ContentDetail> ShowContentDetail(int ContentId);

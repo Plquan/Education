@@ -36,14 +36,12 @@ namespace Education.Application.Repository
 
         public async Task<int> Delete(string Id)
         {
-
             var bookmark = await _context.Bookmarks.Where(u => u.UserId == Id).ToListAsync();
             _context.Bookmarks.RemoveRange(bookmark);
             var likes = await _context.Likes.Where(u => u.UserId == Id).ToListAsync();
             _context.Likes.RemoveRange(likes);
             var comments = await _context.Comments.Where(u => u.UserId == Id).ToListAsync();
             _context.Comments.RemoveRange(comments);
-
 
             var playlist = _context.Playlists
               .Include(x => x.Bookmarks)
@@ -80,7 +78,6 @@ namespace Education.Application.Repository
                 _context.Playlists.Remove(playlist);
             }
             
-
             var getu = await _context.Users.FirstOrDefaultAsync(x => x.Id == Id);
             _context.Users.Remove(getu);
             return _context.SaveChanges();
@@ -100,34 +97,6 @@ namespace Education.Application.Repository
                                 }
                                 ).ToListAsync();
             return getall;
-        }
-
-        public async Task<PagedResult<UserDetailVM>> GetAllTeacherPaging(int PageIndex, int PageSize)
-        {
-            var query = await (from u in _context.Users
-                               join
-                                   ur in _context.UserRoles on u.Id equals ur.UserId
-                               join r in _context.Roles on ur.RoleId equals r.Id
-                               where r.Name == "Tutor"
-                               select new UserDetailVM()
-                               {
-                                   Id = u.Id,
-                                   Name = u.UserName,
-                                   Email = u.Email,
-                                   Status = u.Status,
-
-                               }
-                               ).ToListAsync();
-            int totalrow = query.Count();
-            var data = query.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-            var PagedResult = new PagedResult<UserDetailVM>()
-            {
-                TotalRecords = totalrow,
-                Items = data,
-                PageSize = PageSize,
-                PageIndex = PageIndex
-            };
-            return PagedResult;
         }
 
         public async Task<PagedResult<UserDetailVM>> GetAllUserPaging(int PageIndex, int PageSize)
@@ -157,7 +126,6 @@ namespace Education.Application.Repository
 
         public async Task<EditUserVM> getbyId(string id)
         {
-
             var getuser = await (from u in _context.Users
                                  where u.Id == id
                                  select new EditUserVM()

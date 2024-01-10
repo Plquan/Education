@@ -57,7 +57,12 @@ builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Educat
 //    options.SignIn.RequireConfirmedAccount = true;
 //});
 
-
+builder.Services.ConfigureApplicationCookie(options =>
+{ 
+    options.AccessDeniedPath = "/Admin/Privacy/Index";
+    options.LoginPath = "/Account/Login";
+   
+});
 
 
 var app = builder.Build();

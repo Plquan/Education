@@ -32,10 +32,17 @@ namespace Education.Application.Repository
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> Delete(Content content)
+        public async Task<int> Delete(int Id)
         {
-             _context.Remove(content);
-            return _context.SaveChangesAsync();
+            var comments = await _context.Comments.Where(c => c.ContentId == Id).ToListAsync();
+            _context.Comments.RemoveRange(comments);
+
+            var likes = await _context.Likes.Where(c => c.ContentId == Id).ToListAsync();
+            _context.Likes.RemoveRange(likes);
+
+            var query = await _context.Contents.FirstOrDefaultAsync(x => x.Id == Id);  
+            _context.Contents.Remove(query);
+            return _context.SaveChanges();
         }
 
         public async Task<List<Content>> GetAll()

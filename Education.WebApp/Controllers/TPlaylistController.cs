@@ -196,10 +196,22 @@ namespace Education.WebApp.Controllers
 
         public async Task<IActionResult> ContentDetail(int Id)
         {
-            ContentDetail getc = await _contentRepository.ShowContentDetail(Id);
+            var getc = await _contentRepository.ShowContentDetail(Id);
             return View(getc);
         }
-    
-        
+
+        public async Task<int> DeleteContent(int Id)
+        {
+            try
+            {
+                await _contentRepository.Delete(Id);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
     }
 }
