@@ -18,7 +18,7 @@ namespace Education.Data.Configurations
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.Title).HasMaxLength(200).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(300).IsRequired();
-            builder.Property(x => x.Thumb).HasMaxLength(200).IsRequired();
+            builder.Property(x => x.Thumb).HasMaxLength(300).IsRequired();
             builder.HasOne(x => x.AppUser).WithMany(x => x.Playlists).HasForeignKey(x => x.UserId);
         }
     }

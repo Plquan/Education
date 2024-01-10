@@ -12,5 +12,7 @@ namespace Education.ViewModel
        public int Bookmarks { get; set; }
         public int LikeCounts { get; set; }
         public int CommentCounts { get; set; }
+        public int TotalComment { get; set; }
+        public int TotalPlaylist { get;set; }
     }
 }

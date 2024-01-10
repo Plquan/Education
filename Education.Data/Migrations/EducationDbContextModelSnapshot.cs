@@ -49,18 +49,18 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = "8D04DCE2-969A-435D-BBA4-DF3F325983DC",
-                            ConcurrencyStamp = "b0a2cf22-d2f5-4705-b24c-59635e1c7199",
+                            ConcurrencyStamp = "351ed65f-2b79-4c2f-92db-2c9fa680427d",
                             Description = "Teacher",
                             Name = "Tutor",
                             NormalizedName = "Tutor"
                         },
                         new
                         {
-                            Id = "1ca97892-b6b9-426a-a8ec-c00dc4e70918",
-                            ConcurrencyStamp = "1f25d1fc-220c-42a2-aafc-6c011636aa18",
-                            Description = "Student",
-                            Name = "Student",
-                            NormalizedName = "Student"
+                            Id = "8E04DCE2-970A-435D-BBA4-DF3F325983DC",
+                            ConcurrencyStamp = "55de9683-f1cb-4111-a159-7600709e63a2",
+                            Description = "Adminstrator",
+                            Name = "Admin",
+                            NormalizedName = "Admin"
                         });
                 });
 
@@ -110,6 +110,9 @@ namespace Education.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -125,33 +128,35 @@ namespace Education.Data.Migrations
                         {
                             Id = "69BD714F-9576-45BA-B5B7-F00649BE00DE",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e9c0ca23-0ba2-4a4a-a7ee-96f58343ab71",
+                            ConcurrencyStamp = "3db32e4f-0d29-4733-8588-5aa9fed039bf",
                             Email = "phamlequan118@gmail.com",
                             EmailConfirmed = true,
                             Image = "/images/pic-1.jpg",
                             LockoutEnabled = false,
                             NormalizedEmail = "phamlequan118@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAED5pvzUVIesRzeg82Ty3OaoHRsdtVUTgx2lcVmcD/TebglMHpIz0VAlOuP1cLlbkfQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPfX9BrTEKuwGQK1x2y01ur7GfSySjsK/88p76X1gxtEgBegDQM81WgUrT7rYxgnmg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
+                            Status = 0,
                             TwoFactorEnabled = false,
                             UserName = "Quan"
                         },
                         new
                         {
-                            Id = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                            Id = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9db7875a-5cf9-4a27-aebd-8a08be47dbe6",
-                            Email = "Levanquan118@gmail.com",
+                            ConcurrencyStamp = "42c7e74d-c6d7-4e5f-8032-6aec5c80d990",
+                            Email = "phamlequan@gmail.com",
                             EmailConfirmed = true,
-                            Image = "/images/pic-7.jpg",
+                            Image = "/images/pic-1.jpg",
                             LockoutEnabled = false,
-                            NormalizedEmail = "Levanquan118@gmail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO57xgPWmmG7Cry32aWE1zCAaHnKIj6ejD/19qMETuZMMpGFsZo2XMoUouwbpi8LBA==",
+                            NormalizedEmail = "phamlequan@gmail.com",
+                            PasswordHash = "AQAAAAEAACcQAAAAENIrs4RCCpvEzowJmdhYvS4vkI4wiHDOZsDj8lsGeB6bKeCOJKjMB1vzdS4bosnYBg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
+                            Status = 0,
                             TwoFactorEnabled = false,
-                            UserName = "HeHe"
+                            UserName = "QuanLe"
                         });
                 });
 
@@ -172,12 +177,12 @@ namespace Education.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                             PlaylistId = 1
                         },
                         new
                         {
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                             PlaylistId = 2
                         });
                 });
@@ -218,17 +223,17 @@ namespace Education.Data.Migrations
                         {
                             Id = 1,
                             ContentId = 1,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5909),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3780),
                             Message = "xin chao casc ban",
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918"
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE"
                         },
                         new
                         {
                             Id = 2,
                             ContentId = 2,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5910),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3782),
                             Message = "xin chao casc ban 2",
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918"
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE"
                         });
                 });
 
@@ -284,8 +289,8 @@ namespace Education.Data.Migrations
 
                     b.Property<string>("Thumb")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -294,8 +299,8 @@ namespace Education.Data.Migrations
 
                     b.Property<string>("Video")
                         .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
@@ -307,7 +312,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5883),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3744),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -318,7 +323,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5884),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3746),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -329,7 +334,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 3,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5885),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3747),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -340,7 +345,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 4,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5886),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3748),
                             Description = "cai lmao",
                             PlaylistId = 1,
                             Status = 1,
@@ -351,7 +356,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 5,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5887),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3749),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -362,7 +367,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 6,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5889),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3749),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -373,7 +378,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 7,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5890),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3751),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -384,7 +389,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 8,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5891),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3752),
                             Description = "cai lmao",
                             PlaylistId = 2,
                             Status = 1,
@@ -411,12 +416,12 @@ namespace Education.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                             ContentId = 1
                         },
                         new
                         {
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                             ContentId = 2
                         });
                 });
@@ -442,8 +447,8 @@ namespace Education.Data.Migrations
 
                     b.Property<string>("Thumb")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -464,7 +469,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5861),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3710),
                             Description = "Description",
                             Status = 1,
                             Thumb = "/images/thumb-1.png",
@@ -474,7 +479,7 @@ namespace Education.Data.Migrations
                         new
                         {
                             Id = 2,
-                            DateCreated = new DateTime(2023, 12, 7, 21, 56, 34, 159, DateTimeKind.Local).AddTicks(5870),
+                            DateCreated = new DateTime(2024, 1, 1, 14, 26, 57, 659, DateTimeKind.Local).AddTicks(3721),
                             Description = "Description",
                             Status = 1,
                             Thumb = "/images/thumb-2.png",
@@ -566,8 +571,8 @@ namespace Education.Data.Migrations
                         },
                         new
                         {
-                            UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
-                            RoleId = "1ca97892-b6b9-426a-a8ec-c00dc4e70918"
+                            UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
+                            RoleId = "8E04DCE2-970A-435D-BBA4-DF3F325983DC"
                         });
                 });
 

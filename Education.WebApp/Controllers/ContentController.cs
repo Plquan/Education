@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
-    [Authorize]
+
     public class ContentController : Controller
     {
         private readonly IContentRepository _contentRepository;

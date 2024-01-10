@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Education.WebApp.Controllers
-{
-    
+{   
     public class TutorController : Controller
     {
         private readonly ITutorRepository _repository;

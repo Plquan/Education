@@ -1,0 +1,28 @@
+﻿@using Education.ViewModel.Users
+@model ChangePassVM
+
+<!-- register section starts  -->
+
+<section class="form-container" style="min-height: calc(100vh - 19rem);">
+    <input type="hidden" asp-for="Id">
+    <form class="register" action="" method="post" enctype="multipart/form-data">
+        <h3>change password</h3>
+        <div class="flex">
+            <div class="col">
+                <p>old password :</p>
+                <input type="password" asp-for="OldPassword" placeholder="enter your old password" maxlength="20" class="box">
+                <p style="color:red">@ViewBag.message</p>
+                <p>new password :</p>
+                <input type="password" asp-for="NewPassword" placeholder="enter your new password" maxlength="20" class="box">              
+                <p>confirm password :</p>
+                <input type="password" asp-for="ConfirmPassWord" placeholder="confirm your new password" maxlength="20" class="box">
+                <input type="submit" name="submit" value="Save" class="btn">
+            </div> 
+        </div>
+        
+      
+    </form>
+
+</section>
+
+<!-- registe section ends -->

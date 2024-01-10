@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
-    [Authorize]
+
     public class BookMarkController : Controller
     {
         private readonly IBookMarkRepository _bookMarkRepository;

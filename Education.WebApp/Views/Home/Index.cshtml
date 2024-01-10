@@ -28,9 +28,21 @@
             </div>
             </div>
         }
-         else
+        else
         {
-              <div class="box">
+            if (User.IsInRole("Tutor"))
+            {
+                <div class="box">
+                    <h3 class="title">playlists and comments</h3>
+                    <p>total playlists : <span>@Model.TotalComment</span></p>
+                    <a asp-action="Index" asp-controller="TPlaylist" class="inline-btn">view playlists</a>
+                    <p>total comments : <span>@Model.TotalComment</span></p>
+                    <a asp-action="Index" asp-controller="TComment" class="inline-btn">view comments</a>
+                </div>
+            }
+            else
+            {                         
+            <div class="box">
                 <h3 class="title">likes and comments</h3>
                 <p>total likes : <span>@Model.LikeCounts</span></p>
                 <a asp-action="Index" asp-controller="Like"  class="inline-btn">view likes</a>
@@ -39,6 +51,7 @@
                 <p>saved playlist : <span>@Model.Bookmarks</span></p>
                 <a asp-action="Index" asp-controller="BookMark" class="inline-btn">view bookmark</a>
             </div>  
+            }
         } 
 
         <div class="box">

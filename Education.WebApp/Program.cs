@@ -18,6 +18,7 @@ builder.Services.AddScoped<ITutorRepository,TuTorRepository>();
 builder.Services.AddScoped<IBookMarkRepository,BookmarkRepository>();
 builder.Services.AddScoped<ILikeRepository,LikeRepository>();
 builder.Services.AddScoped<ICommentRepository,CommentRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 //cloudinary
@@ -28,13 +29,34 @@ builder.Services.AddDbContext<EducationDbContext>(options =>
 });
 
 
-builder.Services.AddIdentity<AppUser, AppRole>()
-    .AddEntityFrameworkStores<EducationDbContext>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<EducationDbContext>();
 
-builder.Services.ConfigureApplicationCookie(options => {
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/Login";
-});
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    // Password settings.
+//    options.Password.RequireDigit = false;
+//    options.Password.RequireLowercase = false;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.Password.RequireUppercase = false;
+//    options.Password.RequiredLength = 6;
+//    options.Password.RequiredUniqueChars = 1;
+
+//    // Lockout settings.
+//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+//    options.Lockout.MaxFailedAccessAttempts = 10;
+//    options.Lockout.AllowedForNewUsers = true;
+
+//    // User settings.
+//    options.User.AllowedUserNameCharacters =
+//    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+//    options.User.RequireUniqueEmail = false;
+
+//    // Cấu hình đăng nhập.
+//    options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
+//    options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
+//    options.SignIn.RequireConfirmedAccount = true;
+//});
+
 
 
 

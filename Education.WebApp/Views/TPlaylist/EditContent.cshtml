@@ -1,0 +1,40 @@
+﻿@using Education.Data.Enum;
+@using Education.ViewModel.Contents
+@model EditContentVM
+<section class="video-form">
+
+    <h1 class="heading">update content</h1>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="PlaylistId">
+        <p>update status <span>*</span></p>
+         <select asp-for="Status" class="box" required>
+            <option selected>@Model.Status</option>
+            @if(Model.Status == Status.Active)
+            {
+                <option>InActive</option>
+            }
+            else
+            { 
+                <option>Active</option> 
+            }
+            </select>
+        <p>update title <span>*</span></p>
+        <input type="text" name="title" maxlength="100" required placeholder="enter video title" class="box" value="@Model.Title">
+        <p>update description <span>*</span></p>
+        <textarea  class="box" asp-for="Description" required placeholder="write description" maxlength="1000" cols="30" rows="10"></textarea>
+        <p>update thumbnail <span>*</span></p>
+        <img src="@Model.UrlThumb" alt="">
+        <input type="file" asp-for="Thumb" name="thumb" accept="image/*" class="box">
+        <p>update video <span>*</span></p>
+        <video src="@Model.UrlVideo" controls></video>
+        <input type="file" asp-for="Video" name="video" accept="video/*" class="box">
+        <input type="submit" value="update" name="update" class="btn">
+        <div class="flex-btn">         
+            <input type="submit" value="delete" name="delete_video" class="delete-btn">
+            <a href="/Tplaylist/Detail/@Model.PlaylistId" class="option-btn">Cancel</a>
+        </div>
+    </form>
+   
+
+</section>

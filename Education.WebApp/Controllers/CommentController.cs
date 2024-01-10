@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Education.WebApp.Controllers
 {
-   
+
     public class CommentController : Controller
     {
         private readonly ICommentRepository _commentRepository;

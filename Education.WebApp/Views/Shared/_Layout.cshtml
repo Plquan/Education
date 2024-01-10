@@ -24,7 +24,7 @@
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="~/css/style.css">
-
+    <link rel="stylesheet" href="~/css/admin_style.css">
     <link rel="stylesheet" href="~/toastr/toastr.css">
    
 
@@ -36,11 +36,11 @@
 
         <section class="flex">
 
-            <a href="home.php" class="logo">Educa.</a>
+            <a href="/Home/Index" class="logo">Educa.</a>
 
-            <form action="search_course.php" method="post" class="search-form">
-                <input type="text" name="search_course" placeholder="search courses..." required maxlength="100">
-                <button type="submit" class="fas fa-search" name="search_course_btn"></button>
+            <form asp-action="Search" asp-controller="Home" method="get" class="search-form">
+                <input type="text" name="keyword" placeholder="search courses..." required maxlength="100">
+                <button type="submit" class="fas fa-search"></button>
             </form>
 
             <div class="icons">
@@ -51,7 +51,6 @@
             </div>
 
             <div class="profile">
-
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <img src="@CurrentUser.Image" alt="">
@@ -64,7 +63,7 @@
                     {
                         <span>tutor</span>
                     }
-                    <a href="profile.php" class="btn">view profile</a>
+                    <a asp-action="ChangePass" asp-controller="Account" asp-route-Id="@CurrentUser.Id" class="btn">Change password</a>
                     <a asp-controller="Account" asp-action="Logout" onclick="return confirm('logout from this website?');" class="delete-btn">logout</a>
                 }
                 else
@@ -95,8 +94,8 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <img src="@CurrentUser.Image" alt="">
-                <h3>@CurrentUser.UserName</h3>
-                <a asp-action="Index" asp-controller="Profile" asp-route-Id ="@CurrentUser.Id" class="btn">view profile</a>
+                <h3>@CurrentUser.UserName</h3>      
+                    <a asp-action="Update" asp-controller="Profile" asp-route-Id="@CurrentUser.Id" class="btn">update profile</a>        
             }
             else
             {
@@ -107,9 +106,9 @@
         @if (User.IsInRole("Tutor")) {
             <nav class="navbar">
                 <a href="/Home/Index"><i class="fas fa-home"></i><span>home</span></a>
-                <a href="/Playlist/Index"><i class="fas fa-graduation-cap"></i><span>courses</span></a>
-                <a href="/TuTor/Index"><i class="fas fa-chalkboard-user"></i><span>teachers</span></a>
-                <a href="/Teacher/Home/Index"><i class="fa-solid fa-right-from-bracket"></i><span>Dashboard</span></a>
+                <a href="/TPlaylist/Index"><i class="fa-solid fa-bars-staggered"></i><span>your playlists</span></a>
+                <a href="/TComment/Index"><i class="fas fa-comment"></i><span>comments</span></a>
+                <a href="/Contact/Index"><i class="fas fa-headset"></i><span>contact us</span></a>
             </nav>
 
         }

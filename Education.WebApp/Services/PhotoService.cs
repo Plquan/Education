@@ -19,12 +19,7 @@ namespace Education.WebApp.Services
             _cloundinary = new Cloudinary(acc);
         }
         public async Task<ImageUploadResult> AddPhotoAsync(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                // Handle invalid file
-                return null;
-            }
+        {         
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)
             {
@@ -55,12 +50,6 @@ namespace Education.WebApp.Services
 
         public async Task<UploadResult> UploadVideoAsync(IFormFile videoFile)
         {
-            if (videoFile == null || videoFile.Length == 0)
-            {
-                // Handle invalid file
-                return null;
-            }
-
             // Tạo request để upload video
             var uploadParams = new VideoUploadParams
             {

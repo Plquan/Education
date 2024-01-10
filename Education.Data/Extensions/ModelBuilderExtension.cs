@@ -15,6 +15,7 @@ namespace Education.Data.Extensions
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
+
             //tutor
             var roleId = "8D04DCE2-969A-435D-BBA4-DF3F325983DC";
             var Tutor = "69BD714F-9576-45BA-B5B7-F00649BE00DE";
@@ -43,35 +44,37 @@ namespace Education.Data.Extensions
                 RoleId = roleId,
                 UserId = Tutor
             });
-            //Student
-            var roleId1 = "1ca97892-b6b9-426a-a8ec-c00dc4e70918";
-            var Student = "1cab8792-b6b9-426a-a8ec-cabdc4e70918";
+
+            //Admin
+            var roleId2 = "8E04DCE2-970A-435D-BBA4-DF3F325983DC";
+            var Admin = "70BD714F-9576-45BA-B5B7-F00649BE00DE";
             modelBuilder.Entity<AppRole>().HasData(new AppRole
             {
-                Id = roleId1,
-                Name = "Student",
-                NormalizedName = "Student",
-                Description = "Student"
+                Id = roleId2,
+                Name = "Admin",
+                NormalizedName = "Admin",
+                Description = "Adminstrator"
             });
 
-            var hasher1 = new PasswordHasher<AppUser>();
+            var hasher2 = new PasswordHasher<AppUser>();
             modelBuilder.Entity<AppUser>().HasData(new AppUser
             {
-                Id = Student,
-                UserName = "HeHe",
-                Email = "Levanquan118@gmail.com",
-                NormalizedEmail = "Levanquan118@gmail.com",
+                Id = Admin,
+                UserName = "QuanLe",
+                Email = "phamlequan@gmail.com",
+                NormalizedEmail = "phamlequan@gmail.com",
                 EmailConfirmed = true,
-                PasswordHash = hasher.HashPassword(null, "Abcd1234$"),
+                PasswordHash = hasher2.HashPassword(null, "Abcd1234$"),
                 SecurityStamp = string.Empty,
-                Image = "/images/pic-7.jpg"
+                Image = "/images/pic-1.jpg"
             });
-
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
-                RoleId = roleId1,
-                UserId = Student
+                RoleId = roleId2,
+                UserId = Admin
             });
+
+
 
 
             modelBuilder.Entity<Playlist>().HasData(
@@ -194,7 +197,7 @@ namespace Education.Data.Extensions
                 new Comment()
                 {
                     Id = 1,
-                    UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                    UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
             ContentId = 1,
                     Message = "xin chao casc ban",
                     DateCreated = DateTime.Now,
@@ -202,7 +205,7 @@ namespace Education.Data.Extensions
                  new Comment()
                  {
                      Id = 2,
-                     UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                     UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                      ContentId = 2,
                      Message = "xin chao casc ban 2",
                      DateCreated = DateTime.Now,
@@ -212,12 +215,12 @@ namespace Education.Data.Extensions
             modelBuilder.Entity<Like>().HasData(
                 new Like()
                 {
-                    UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                    UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                     ContentId = 1,
                 },
                  new Like()
                  {
-                     UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                     UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                      ContentId = 2,
                  }
                 );
@@ -225,12 +228,12 @@ namespace Education.Data.Extensions
             modelBuilder.Entity<BookMark>().HasData(
                 new BookMark()
                 {
-                    UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                    UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                     PlaylistId = 1
                 },
                  new BookMark()
                  {
-                     UserId = "1cab8792-b6b9-426a-a8ec-cabdc4e70918",
+                     UserId = "70BD714F-9576-45BA-B5B7-F00649BE00DE",
                      PlaylistId = 2
                  }
                 ); ;

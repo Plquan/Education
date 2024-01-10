@@ -1,0 +1,158 @@
+﻿@using Education.ViewModel.Paging
+@using Education.ViewModel.Users
+@model PagedResult<UserDetailVM>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Data Tables</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">Home</li>
+            </ol>
+
+        </nav>
+     
+            <a type="button" class="btn btn-success" asp-controller="User" asp-action="Create">
+                <i class="bi bi-file-earmark-text me-1"></i> New User
+            </a>
+     
+
+    </div><!-- End Page Title -->
+    @if(ViewBag.Success != null)
+    {
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="Message">
+        @ViewBag.Success
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    }
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body" style="height:400px;overflow:hidden">
+                        <h5 class="card-title">Datatables</h5>
+
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Active</th>
+                                    <th scope="col">Function</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 1;
+                                }
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <th scope="row">@(i++)</th>
+                                        <td>
+                                            <a asp-action ="Profile" asp-route-Id="@item.Id" class="text-primary">@item.Name</a>
+                                        </td>
+                                        <td>@item.Email</td>
+
+                                        @{
+                                            string checkbox;
+                                        }
+                                        @if (item.Status == Education.Data.Enum.Status.Active)
+                                        {
+                                            checkbox = "checked";
+                                        }
+                                        else
+                                        {
+                                            checkbox = "";
+                                        }
+                                            <td>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" id="@item.Id" @checkbox>
+                                                <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+                                                </div>
+                                            </td>                                                                               
+                                        <td>
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |                                       
+                                            @Html.ActionLink("Detete", "Delete", new { id = item.Id }) |
+                                            @Html.ActionLink("Role Assign", "RoleAssign", new { id = item.Id })
+                                        </td>
+
+                                   
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    @await Component.InvokeAsync("Pager",Model)
+</main><!-- End #main -->
+
+@section Scripts{
+
+        <script>
+            $(document).ready(function () {
+
+            $(".form-check-input[type='checkbox']").each(function () {         
+                $(this).click(function () {
+                  
+                   if ($(this).prop("checked")) {
+                        $.ajax({
+                            url: "/Admin/User/CheckStatus",
+                            type: "POST",
+                            data: {
+                                Id: this.id,
+                                status: 1
+                            },
+                            success: function (data) {
+                                console.log("Success");
+                            },
+                            error: function (error) {
+                                console.error("false");
+                            }
+
+                        });
+                    }
+                   else {
+                        $.ajax({
+                            url: "/Admin/User/CheckStatus",
+                            type: "POST",
+                            data: {
+                                Id : this.id,
+                                status : 0
+                            },
+                            success: function (data) {
+                                console.log("Success");
+                            },
+                            error: function (error) {
+                                console.error("false");
+                            }
+
+                        });
+                    }
+                });
+            });
+
+
+       
+           });
+    </script>
+
+    <script>
+        setTimeout(function () {
+            $("#Message").fadeOut('slow');
+        },1000);
+
+    </script>
+}
